@@ -16,8 +16,10 @@ __Architecture:__
 
 ```sh
 $ sudo apt install -y nodejs npm
+
 $ nodejs -v
 v10.19.0
+
 $ npm -v
 6.14.4
 
