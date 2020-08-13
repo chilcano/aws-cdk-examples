@@ -1,7 +1,7 @@
 # Simple Frontend-Backend Application
 
 >  
->  This CDK sample was inspired for the Jeff Bryner's blog post about [Taking AWS CDK for a spin for deploying docker containers](https://blog.jeffbryner.com/2020/07/20/aws-cdk-docker-explorations.html).  
+>  This CDK example was inspired by the Jeff Bryner's article about [Taking AWS CDK for a spin for deploying docker containers](https://blog.jeffbryner.com/2020/07/20/aws-cdk-docker-explorations.html).  
 >  Jeff used AWS CDK with Python, but in this sample I'm going to use TypeScript, that is only difference.
 >  
 
