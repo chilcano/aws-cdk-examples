@@ -2,7 +2,7 @@
 
 A set of samples I used to experiment with AWS CDK.
 
-## Samples
+## Projects
 
 1. [Simple PHP Application](simple-php-ts-ecs/)
    * 1 container for PHP Webapp exposed through AWS ALB.
@@ -12,6 +12,15 @@ A set of samples I used to experiment with AWS CDK.
    * 2 containers, a frontend Flask app with a template talking to a backend Redis service to persist timestamps.
    * CDK TypeScript.
    * Fargate ECS cluster, 1 VPC, (CloudMap) DNS resolution.
+3. [VS Code / Code-Server in AWS ECS](code-server-ecs)
+
+
+## References
+
+- [AWS CDK](https://github.com/aws/aws-cdk)
+- [AWS CDK Documentation](https://docs.aws.amazon.com/cdk/latest/guide/home.html)
+- [AWS CDK Examples](https://github.com/aws-samples/aws-cdk-examples)
+
 
 ## Troubleshooting
 
