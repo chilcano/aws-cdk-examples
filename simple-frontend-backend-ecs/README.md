@@ -32,7 +32,14 @@ The `cdk init` will generate an empty TypeScript project:
 
 Import modules to your project.
 ```sh
-$ npm install @aws-cdk/aws-ec2 @aws-cdk/aws-ecs @aws-cdk/aws-ecs-patterns @aws-cdk/aws-logs
+$ npm install @aws-cdk/core \
+              @aws-cdk/aws-ec2 \
+              @aws-cdk/aws-ecs \
+              @aws-cdk/aws-ecs-patterns \
+              @aws-cdk/aws-logs \
+              @aws-cdk/aws-elasticloadbalancingv2 \
+              @aws-cdk/aws-ecr \
+              @aws-cdk/aws-ecr-assets
 ``` 
 
 Implement your infrastructure writting the code below:
