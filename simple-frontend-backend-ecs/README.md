@@ -105,3 +105,8 @@ If you try to open the `BeSvcLoadBalancerDNSF8CEC0A3` URL in your browser, you w
 ```sh
 $ cdk destroy
 ``` 
+
+## 2. References
+
+1. [Taking AWS CDK for a spin for deploying docker containers](https://blog.jeffbryner.com/2020/07/20/aws-cdk-docker-explorations.html): This is the Jeff Bryner's article which inspired me.
+2. [Docker ♥️ AWS – A match made in heaven](https://www.youtube.com/watch?v=RfQrgZFq_P0): This is the explanation and demo that Chad Metcalf did about migrating a Frontend/Backend Application based on Docker Compose to AWS ECS. This Git repo uses the same Application and Docker containers. 

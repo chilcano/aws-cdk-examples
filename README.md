@@ -8,11 +8,12 @@ A set of samples I used to experiment with AWS CDK.
    * 1 container for PHP Webapp exposed through AWS ALB.
    * CDK TypeScript.
    * Fargate ECS cluster.
-2. [Simple Frontend-Backend App using Flask and Redis](simple-frontend-backend-ecs/)
-   * 2 containers, a frontend Flask app with a template talking to a backend Redis service to persist timestamps.
+2. [Simple Frontend(Flask)-Backend(Redis) App using Flask and Redis](simple-frontend-backend-ecs/)
+   * 2 containers, a Frontend Flask app talking to a Backend Redis service to persist timestamps.
    * CDK TypeScript.
    * Fargate ECS cluster, 1 VPC, (CloudMap) DNS resolution.
-3. [VS Code / Code-Server in AWS ECS](code-server-ecs)
+3. 
+4. VS Code / Code-Server in AWS ECS
 
 
 ## References
