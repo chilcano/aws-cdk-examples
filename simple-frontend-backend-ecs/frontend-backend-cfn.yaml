@@ -1,0 +1,809 @@
+Resources:
+  FeBeVpc9A857140:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: FeBeStack/FeBeVpc
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/Resource
+  FeBeVpcPublicSubnet1Subnet8BB601B5:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/18
+      VpcId:
+        Ref: FeBeVpc9A857140
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet1/Subnet
+  FeBeVpcPublicSubnet1RouteTableAAFD46F1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: FeBeVpc9A857140
+      Tags:
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet1/RouteTable
+  FeBeVpcPublicSubnet1RouteTableAssociation9E8D516C:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: FeBeVpcPublicSubnet1RouteTableAAFD46F1
+      SubnetId:
+        Ref: FeBeVpcPublicSubnet1Subnet8BB601B5
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet1/RouteTableAssociation
+  FeBeVpcPublicSubnet1DefaultRouteE74C64F3:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: FeBeVpcPublicSubnet1RouteTableAAFD46F1
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: FeBeVpcIGWACDC133E
+    DependsOn:
+      - FeBeVpcVPCGW4D8CA6AE
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet1/DefaultRoute
+  FeBeVpcPublicSubnet1EIP17DA43F2:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet1/EIP
+  FeBeVpcPublicSubnet1NATGateway24DC67AE:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - FeBeVpcPublicSubnet1EIP17DA43F2
+          - AllocationId
+      SubnetId:
+        Ref: FeBeVpcPublicSubnet1Subnet8BB601B5
+      Tags:
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PublicSubnet1
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet1/NATGateway
+  FeBeVpcPublicSubnet2Subnet4002A384:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.64.0/18
+      VpcId:
+        Ref: FeBeVpc9A857140
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet2/Subnet
+  FeBeVpcPublicSubnet2RouteTableD28AA452:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: FeBeVpc9A857140
+      Tags:
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet2/RouteTable
+  FeBeVpcPublicSubnet2RouteTableAssociation52B33ECA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: FeBeVpcPublicSubnet2RouteTableD28AA452
+      SubnetId:
+        Ref: FeBeVpcPublicSubnet2Subnet4002A384
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet2/RouteTableAssociation
+  FeBeVpcPublicSubnet2DefaultRoute3ECE11F8:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: FeBeVpcPublicSubnet2RouteTableD28AA452
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: FeBeVpcIGWACDC133E
+    DependsOn:
+      - FeBeVpcVPCGW4D8CA6AE
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet2/DefaultRoute
+  FeBeVpcPublicSubnet2EIPE3D76AFA:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet2/EIP
+  FeBeVpcPublicSubnet2NATGateway2750E059:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+          - FeBeVpcPublicSubnet2EIPE3D76AFA
+          - AllocationId
+      SubnetId:
+        Ref: FeBeVpcPublicSubnet2Subnet4002A384
+      Tags:
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PublicSubnet2
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PublicSubnet2/NATGateway
+  FeBeVpcPrivateSubnet1SubnetA49E93D7:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.128.0/18
+      VpcId:
+        Ref: FeBeVpc9A857140
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PrivateSubnet1/Subnet
+  FeBeVpcPrivateSubnet1RouteTable34C7249C:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: FeBeVpc9A857140
+      Tags:
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PrivateSubnet1
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PrivateSubnet1/RouteTable
+  FeBeVpcPrivateSubnet1RouteTableAssociation946B7D30:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: FeBeVpcPrivateSubnet1RouteTable34C7249C
+      SubnetId:
+        Ref: FeBeVpcPrivateSubnet1SubnetA49E93D7
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PrivateSubnet1/RouteTableAssociation
+  FeBeVpcPrivateSubnet1DefaultRoute9CA7CFC6:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: FeBeVpcPrivateSubnet1RouteTable34C7249C
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: FeBeVpcPublicSubnet1NATGateway24DC67AE
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PrivateSubnet1/DefaultRoute
+  FeBeVpcPrivateSubnet2Subnet6755F87A:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.192.0/18
+      VpcId:
+        Ref: FeBeVpc9A857140
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Private
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PrivateSubnet2/Subnet
+  FeBeVpcPrivateSubnet2RouteTable9B73B1B8:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: FeBeVpc9A857140
+      Tags:
+        - Key: Name
+          Value: FeBeStack/FeBeVpc/PrivateSubnet2
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PrivateSubnet2/RouteTable
+  FeBeVpcPrivateSubnet2RouteTableAssociation385C1A22:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: FeBeVpcPrivateSubnet2RouteTable9B73B1B8
+      SubnetId:
+        Ref: FeBeVpcPrivateSubnet2Subnet6755F87A
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PrivateSubnet2/RouteTableAssociation
+  FeBeVpcPrivateSubnet2DefaultRoute7880EB84:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: FeBeVpcPrivateSubnet2RouteTable9B73B1B8
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: FeBeVpcPublicSubnet2NATGateway2750E059
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/PrivateSubnet2/DefaultRoute
+  FeBeVpcIGWACDC133E:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: FeBeStack/FeBeVpc
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/IGW
+  FeBeVpcVPCGW4D8CA6AE:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: FeBeVpc9A857140
+      InternetGatewayId:
+        Ref: FeBeVpcIGWACDC133E
+    Metadata:
+      aws:cdk:path: FeBeStack/FeBeVpc/VPCGW
+  EcsCluster97242B84:
+    Type: AWS::ECS::Cluster
+    Metadata:
+      aws:cdk:path: FeBeStack/EcsCluster/Resource
+  EcsClusterDefaultServiceDiscoveryNamespaceB0971B2F:
+    Type: AWS::ServiceDiscovery::PrivateDnsNamespace
+    Properties:
+      Name: service.local
+      Vpc:
+        Ref: FeBeVpc9A857140
+    Metadata:
+      aws:cdk:path: FeBeStack/EcsCluster/DefaultServiceDiscoveryNamespace/Resource
+  FeTaskDefTaskRole5BA420A4:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: FeBeStack/FeTaskDef/TaskRole/Resource
+  FeTaskDefFB8AEA7E:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Environment:
+            - Name: LOCALDOMAIN
+              Value: service.local
+          Essential: true
+          Image:
+            Fn::Join:
+              - ""
+              - - Ref: AWS::AccountId
+                - .dkr.ecr.
+                - Ref: AWS::Region
+                - "."
+                - Ref: AWS::URLSuffix
+                - /aws-cdk/assets:a0e03e994b7d88ba9c688c24b33ee785b12e591b4188fdfd1acddb8865270899
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: FeTaskDefFeContainerLogGroup2134A5C7
+              awslogs-stream-prefix: FeContainer
+              awslogs-region:
+                Ref: AWS::Region
+          Name: FeContainer
+          PortMappings:
+            - ContainerPort: 5000
+              HostPort: 5000
+              Protocol: tcp
+      Cpu: "512"
+      ExecutionRoleArn:
+        Fn::GetAtt:
+          - FeTaskDefExecutionRoleC3B366F7
+          - Arn
+      Family: FeBeStackFeTaskDefDC133930
+      Memory: "2048"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      TaskRoleArn:
+        Fn::GetAtt:
+          - FeTaskDefTaskRole5BA420A4
+          - Arn
+    Metadata:
+      aws:cdk:path: FeBeStack/FeTaskDef/Resource
+  FeTaskDefFeContainerLogGroup2134A5C7:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 5
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: FeBeStack/FeTaskDef/FeContainer/LogGroup/Resource
+  FeTaskDefExecutionRoleC3B366F7:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: FeBeStack/FeTaskDef/ExecutionRole/Resource
+  FeTaskDefExecutionRoleDefaultPolicy2C923117:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - ecr:BatchCheckLayerAvailability
+              - ecr:GetDownloadUrlForLayer
+              - ecr:BatchGetImage
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":ecr:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :repository/aws-cdk/assets
+          - Action: ecr:GetAuthorizationToken
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - FeTaskDefFeContainerLogGroup2134A5C7
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: FeTaskDefExecutionRoleDefaultPolicy2C923117
+      Roles:
+        - Ref: FeTaskDefExecutionRoleC3B366F7
+    Metadata:
+      aws:cdk:path: FeBeStack/FeTaskDef/ExecutionRole/DefaultPolicy/Resource
+  FeSvcLB7C362FA9:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      Subnets:
+        - Ref: FeBeVpcPublicSubnet1Subnet8BB601B5
+        - Ref: FeBeVpcPublicSubnet2Subnet4002A384
+      Type: network
+    DependsOn:
+      - FeBeVpcPublicSubnet1DefaultRouteE74C64F3
+      - FeBeVpcPublicSubnet2DefaultRoute3ECE11F8
+    Metadata:
+      aws:cdk:path: FeBeStack/FeSvc/LB/Resource
+  FeSvcLBPublicListener6DCB6C3F:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - TargetGroupArn:
+            Ref: FeSvcLBPublicListenerECSGroup2EB75604
+          Type: forward
+      LoadBalancerArn:
+        Ref: FeSvcLB7C362FA9
+      Port: 80
+      Protocol: TCP
+    Metadata:
+      aws:cdk:path: FeBeStack/FeSvc/LB/PublicListener/Resource
+  FeSvcLBPublicListenerECSGroup2EB75604:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Port: 80
+      Protocol: TCP
+      TargetType: ip
+      VpcId:
+        Ref: FeBeVpc9A857140
+    Metadata:
+      aws:cdk:path: FeBeStack/FeSvc/LB/PublicListener/ECSGroup/Resource
+  FeSvcService1750FE22:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster:
+        Ref: EcsCluster97242B84
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 50
+      DesiredCount: 2
+      EnableECSManagedTags: false
+      HealthCheckGracePeriodSeconds: 60
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: FeContainer
+          ContainerPort: 5000
+          TargetGroupArn:
+            Ref: FeSvcLBPublicListenerECSGroup2EB75604
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Fn::GetAtt:
+                - FeSvcServiceSecurityGroup6BE26EC1
+                - GroupId
+          Subnets:
+            - Ref: FeBeVpcPrivateSubnet1SubnetA49E93D7
+            - Ref: FeBeVpcPrivateSubnet2Subnet6755F87A
+      ServiceName: frontend
+      ServiceRegistries:
+        - RegistryArn:
+            Fn::GetAtt:
+              - FeSvcServiceCloudmapServiceC5D9F22A
+              - Arn
+      TaskDefinition:
+        Ref: FeTaskDefFB8AEA7E
+    DependsOn:
+      - FeSvcLBPublicListenerECSGroup2EB75604
+      - FeSvcLBPublicListener6DCB6C3F
+    Metadata:
+      aws:cdk:path: FeBeStack/FeSvc/Service/Service
+  FeSvcServiceCloudmapServiceC5D9F22A:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      DnsConfig:
+        DnsRecords:
+          - TTL: 60
+            Type: A
+        NamespaceId:
+          Fn::GetAtt:
+            - EcsClusterDefaultServiceDiscoveryNamespaceB0971B2F
+            - Id
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: frontend
+      NamespaceId:
+        Fn::GetAtt:
+          - EcsClusterDefaultServiceDiscoveryNamespaceB0971B2F
+          - Id
+    Metadata:
+      aws:cdk:path: FeBeStack/FeSvc/Service/CloudmapService/Resource
+  FeSvcServiceSecurityGroup6BE26EC1:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: FeBeStack/FeSvc/Service/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: flask inbound
+          FromPort: 5000
+          IpProtocol: tcp
+          ToPort: 5000
+      VpcId:
+        Ref: FeBeVpc9A857140
+    Metadata:
+      aws:cdk:path: FeBeStack/FeSvc/Service/SecurityGroup/Resource
+  BeTaskDefTaskRole4C324D67:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: FeBeStack/BeTaskDef/TaskRole/Resource
+  BeTaskDef622A5B6C:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Essential: true
+          Image: redis:alpine
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                Ref: BeTaskDefBeContainerLogGroup0985D276
+              awslogs-stream-prefix: BeContainer
+              awslogs-region:
+                Ref: AWS::Region
+          Name: BeContainer
+          PortMappings:
+            - ContainerPort: 6379
+              HostPort: 6379
+              Protocol: tcp
+      Cpu: "512"
+      ExecutionRoleArn:
+        Fn::GetAtt:
+          - BeTaskDefExecutionRole0032AFB8
+          - Arn
+      Family: FeBeStackBeTaskDefC5318E39
+      Memory: "2048"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      TaskRoleArn:
+        Fn::GetAtt:
+          - BeTaskDefTaskRole4C324D67
+          - Arn
+    Metadata:
+      aws:cdk:path: FeBeStack/BeTaskDef/Resource
+  BeTaskDefBeContainerLogGroup0985D276:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 5
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: FeBeStack/BeTaskDef/BeContainer/LogGroup/Resource
+  BeTaskDefExecutionRole0032AFB8:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: FeBeStack/BeTaskDef/ExecutionRole/Resource
+  BeTaskDefExecutionRoleDefaultPolicyDAF78408:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - BeTaskDefBeContainerLogGroup0985D276
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: BeTaskDefExecutionRoleDefaultPolicyDAF78408
+      Roles:
+        - Ref: BeTaskDefExecutionRole0032AFB8
+    Metadata:
+      aws:cdk:path: FeBeStack/BeTaskDef/ExecutionRole/DefaultPolicy/Resource
+  BeSvcLB94714458:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internal
+      Subnets:
+        - Ref: FeBeVpcPrivateSubnet1SubnetA49E93D7
+        - Ref: FeBeVpcPrivateSubnet2Subnet6755F87A
+      Type: network
+    Metadata:
+      aws:cdk:path: FeBeStack/BeSvc/LB/Resource
+  BeSvcLBPublicListenerF938A74C:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - TargetGroupArn:
+            Ref: BeSvcLBPublicListenerECSGroup2D84829A
+          Type: forward
+      LoadBalancerArn:
+        Ref: BeSvcLB94714458
+      Port: 6379
+      Protocol: TCP
+    Metadata:
+      aws:cdk:path: FeBeStack/BeSvc/LB/PublicListener/Resource
+  BeSvcLBPublicListenerECSGroup2D84829A:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Port: 80
+      Protocol: TCP
+      TargetType: ip
+      VpcId:
+        Ref: FeBeVpc9A857140
+    Metadata:
+      aws:cdk:path: FeBeStack/BeSvc/LB/PublicListener/ECSGroup/Resource
+  BeSvcService4A66B85B:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster:
+        Ref: EcsCluster97242B84
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 50
+      DesiredCount: 2
+      EnableECSManagedTags: false
+      HealthCheckGracePeriodSeconds: 60
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: BeContainer
+          ContainerPort: 6379
+          TargetGroupArn:
+            Ref: BeSvcLBPublicListenerECSGroup2D84829A
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - Fn::GetAtt:
+                - BeSvcServiceSecurityGroup48CC225B
+                - GroupId
+          Subnets:
+            - Ref: FeBeVpcPrivateSubnet1SubnetA49E93D7
+            - Ref: FeBeVpcPrivateSubnet2Subnet6755F87A
+      ServiceName: backend
+      ServiceRegistries:
+        - RegistryArn:
+            Fn::GetAtt:
+              - BeSvcServiceCloudmapService313AC1CF
+              - Arn
+      TaskDefinition:
+        Ref: BeTaskDef622A5B6C
+    DependsOn:
+      - BeSvcLBPublicListenerECSGroup2D84829A
+      - BeSvcLBPublicListenerF938A74C
+    Metadata:
+      aws:cdk:path: FeBeStack/BeSvc/Service/Service
+  BeSvcServiceCloudmapService313AC1CF:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      DnsConfig:
+        DnsRecords:
+          - TTL: 60
+            Type: A
+        NamespaceId:
+          Fn::GetAtt:
+            - EcsClusterDefaultServiceDiscoveryNamespaceB0971B2F
+            - Id
+        RoutingPolicy: MULTIVALUE
+      HealthCheckCustomConfig:
+        FailureThreshold: 1
+      Name: backend
+      NamespaceId:
+        Fn::GetAtt:
+          - EcsClusterDefaultServiceDiscoveryNamespaceB0971B2F
+          - Id
+    Metadata:
+      aws:cdk:path: FeBeStack/BeSvc/Service/CloudmapService/Resource
+  BeSvcServiceSecurityGroup48CC225B:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: FeBeStack/BeSvc/Service/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId:
+        Ref: FeBeVpc9A857140
+    Metadata:
+      aws:cdk:path: FeBeStack/BeSvc/Service/SecurityGroup/Resource
+  BeSvcServiceSecurityGroupfromFeBeStackFeSvcServiceSecurityGroup61C07DE563796139DA30:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      Description: from FeBeStackFeSvcServiceSecurityGroup61C07DE5:6379
+      FromPort: 6379
+      GroupId:
+        Fn::GetAtt:
+          - BeSvcServiceSecurityGroup48CC225B
+          - GroupId
+      SourceSecurityGroupId:
+        Fn::GetAtt:
+          - FeSvcServiceSecurityGroup6BE26EC1
+          - GroupId
+      ToPort: 6379
+    Metadata:
+      aws:cdk:path: FeBeStack/BeSvc/Service/SecurityGroup/from FeBeStackFeSvcServiceSecurityGroup61C07DE5:6379
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Modules: aws-cdk=1.57.0,@aws-cdk/assets=1.57.0,@aws-cdk/aws-applicationautoscaling=1.57.0,@aws-cdk/aws-autoscaling=1.57.0,@aws-cdk/aws-autoscaling-common=1.57.0,@aws-cdk/aws-autoscaling-hooktargets=1.57.0,@aws-cdk/aws-certificatemanager=1.57.0,@aws-cdk/aws-cloudwatch=1.57.0,@aws-cdk/aws-codeguruprofiler=1.57.0,@aws-cdk/aws-ec2=1.57.0,@aws-cdk/aws-ecr=1.57.0,@aws-cdk/aws-ecr-assets=1.57.0,@aws-cdk/aws-ecs=1.57.0,@aws-cdk/aws-ecs-patterns=1.57.0,@aws-cdk/aws-elasticloadbalancingv2=1.57.0,@aws-cdk/aws-events=1.57.0,@aws-cdk/aws-events-targets=1.57.0,@aws-cdk/aws-iam=1.57.0,@aws-cdk/aws-kms=1.57.0,@aws-cdk/aws-lambda=1.57.0,@aws-cdk/aws-logs=1.57.0,@aws-cdk/aws-route53=1.57.0,@aws-cdk/aws-route53-targets=1.57.0,@aws-cdk/aws-s3=1.57.0,@aws-cdk/aws-s3-assets=1.57.0,@aws-cdk/aws-servicediscovery=1.57.0,@aws-cdk/aws-sns=1.57.0,@aws-cdk/aws-sns-subscriptions=1.57.0,@aws-cdk/aws-sqs=1.57.0,@aws-cdk/aws-ssm=1.57.0,@aws-cdk/cloud-assembly-schema=1.57.0,@aws-cdk/core=1.57.0,@aws-cdk/custom-resources=1.57.0,@aws-cdk/cx-api=1.57.0,@aws-cdk/region-info=1.57.0,jsii-runtime=node.js/v10.19.0
+    Condition: CDKMetadataAvailable
+Outputs:
+  FeSvcLoadBalancerDNS64A4F716:
+    Value:
+      Fn::GetAtt:
+        - FeSvcLB7C362FA9
+        - DNSName
+  BeSvcLoadBalancerDNSF8CEC0A3:
+    Value:
+      Fn::GetAtt:
+        - BeSvcLB94714458
+        - DNSName
+Conditions:
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+
