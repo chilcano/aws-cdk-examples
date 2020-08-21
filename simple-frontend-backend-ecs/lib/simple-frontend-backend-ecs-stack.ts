@@ -55,6 +55,6 @@ export class SimpleFrontendBackendEcsStack extends cdk.Stack {
       listenerPort: 6379,
       publicLoadBalancer: false,     
     });
-    beSvc.service.connections.allowFrom(feSvc.service, ec2.Port.tcp(6379));
+    beSvc.service.connections.allowFrom(feSvc.service, ec2.Port.tcp(6379), "allow traffic from frontend only");
   }
 }
