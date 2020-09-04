@@ -105,8 +105,8 @@ Finally, open the URL `[http://localhost:8123](http://localhost:8123)` in your b
 
 The `_assets/scripts/cloud_devops_tools.sh` bash scripts I've used as `userData` installs Code-Server and only the [Settings-Sync](https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync) extension that will allow restore a previous Code-Server or VS Code settings, even other extensions. For that you need a Gist ID that your previous Code-Server or VS Code has generated. If you don't have one, you can use mine.
 
-> Settings-Sync Gist ID: b5f88127bd2d89289dc2cd36032ce856
-> Gist URL: [https://gist.github.com/chilcano/b5f88127bd2d89289dc2cd36032ce856](https://gist.github.com/chilcano/b5f88127bd2d89289dc2cd36032ce856)
+> Settings-Sync Gist ID: b5f88127bd2d89289dc2cd36032ce856   
+> Gist URL: [https://gist.github.com/chilcano/b5f88127bd2d89289dc2cd36032ce856](https://gist.github.com/chilcano/b5f88127bd2d89289dc2cd36032ce856)   
 
 ![](../code-server-ec2/_assets/imgs/2-app-3b.png)
 
