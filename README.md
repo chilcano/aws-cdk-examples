@@ -13,7 +13,7 @@ A set of samples I used to experiment with AWS CDK.
    * CDK TypeScript.
    * Fargate ECS cluster, 1 VPC, (CloudMap) DNS resolution.
 3. [VS Code / Code-Server in AWS EC2, Ubuntu AMI and UserData](code-server-ec2/)
-4. [VS Code / Code-Server in AWS ECS and persisting in EFS.
+4. VS Code / Code-Server in AWS ECS and persisting in EFS.
    * ECS Cluster, 2 docker instances, using `codercom/code-server` image from Docker Hub.
    * Unable to overwrite parameters in Dockerfile (e.g. overwrite the password).
    * Persisting on local file system.
