@@ -12,15 +12,17 @@ export class CodeServerEcsStack extends cdk.Stack {
     const vpc = new ec2.Vpc(this, "Vpc", { maxAzs: 2 });
     const cluster = new ecs.Cluster(this, "Cluster", { vpc: vpc });
     const csTaskDef = new ecs.FargateTaskDefinition(this, "TaskDef", { cpu: 512, memoryLimitMiB: 2048 });
+    const csAssetDckr = new ecr_assets.DockerImageAsset(this, "CsAssetDckr", { directory: "./cs", file: "Dockerfile" });
     const csContainer = csTaskDef.addContainer("Container", {
       // https://hub.docker.com/r/codercom/code-server
       // https://github.com/cdr/code-server/blob/master/doc/install.md#docker
-      image: ecs.ContainerImage.fromRegistry("codercom/code-server"),
+      //image: ecs.ContainerImage.fromRegistry("codercom/code-server"),
 
       //https://github.com/linuxserver/docker-code-server
       //https://hub.docker.com/r/linuxserver/code-server
       //image: ecs.ContainerImage.fromRegistry("linuxserver/code-server"),
       //environment: ???
+      image: ecs.ContainerImage.fromDockerImageAsset(csAssetDckr),
       essential: true,
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: "CsContainer", logRetention: logs.RetentionDays.FIVE_DAYS })
     });

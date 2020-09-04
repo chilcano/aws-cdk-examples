@@ -5,7 +5,7 @@
 >  Jeff used AWS CDK with Python, but in this sample I'm going to use TypeScript, that is only difference.
 >  
 
-![](../simple-frontend-backend-ecs/0-architecture.png)
+![](../simple-frontend-backend-ecs/_assets/imgs/0-architecture.png)
 
 ## 1. Steps
 
@@ -49,13 +49,13 @@ $ cdk synth
 $ cdk deploy
 ```
 
-![](../simple-frontend-backend-ecs/1-cdk-deploy.png)
+![](../simple-frontend-backend-ecs/_assets/imgs/1-cdk-deploy.png)
 
 ### 1.5. Calling the app
 
 If `cdk deploy` went successfully you will get an output with the URLs to call your service or web application.
 
-![](../simple-frontend-backend-ecs/2-cdk-deploy-output.png)
+![](../simple-frontend-backend-ecs/_assets/imgs/2-cdk-deploy-output.png)
 
 In this case they are:
 - FeSvcLoadBalancerDNS64A4F716
@@ -88,17 +88,17 @@ BeSvcLoadBalancerDNSF8CEC0A3	Simpl-BeSvc-UWFPH8XP3ZKD-c2fb41c1de254eb5.elb.us-ea
 ```  
 
 Now, open above URL in your browser, you should see this:  
-![](../simple-frontend-backend-ecs/3-app.png)
+![](../simple-frontend-backend-ecs/_assets/imgs/3-app.png)
 
 
 If for any reason you have changed the code, you should be aware don't change the `serviceName` (`frontend` and `backend`) registered in AWS Cloud Map because you will get the below error.   
 The Frontend Container (Python Flask Web App) will call to Backend Container (Redis) using `backend` as service name:  
 
-![](../simple-frontend-backend-ecs/3-app-error-cloudmap.png)
+![](../simple-frontend-backend-ecs/_assets/imgs/3-app-error-cloudmap.png)
 
 If you try to open the `BeSvcLoadBalancerDNSF8CEC0A3` URL in your browser, you will get this error, which is fine and means you can call the Backend from Internet and your Application has been configured and deployed in right and secure way.
 
-![](../simple-frontend-backend-ecs/4-app-backend-unreachable.png)
+![](../simple-frontend-backend-ecs/_assets/imgs/4-app-backend-unreachable.png)
 
 ### 1.6. Cleaning up
 
