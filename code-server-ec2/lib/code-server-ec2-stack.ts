@@ -52,7 +52,7 @@ export class CodeServerEc2Stack extends cdk.Stack {
       securityGroup: secGrp
     });
 
-    const userData = readFileSync('custom_assets/scripts/install_tools.sh', 'utf-8');
+    const userData = readFileSync('_assets/scripts/install_tools.sh', 'utf-8');
     instance.addUserData( userData );
     instance.instance.addPropertyOverride('KeyName', 'chilcan0');
   }
