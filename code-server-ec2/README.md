@@ -97,11 +97,11 @@ Now, create the SSH tunnel:
 $ ssh -nNT -L 8123:localhost:8080 ubuntu@ec2-54-227-165-113.compute-1.amazonaws.com -i ~/Downloads/chilcan0.pem
 ```  
 
-Finally, open the URL `[http://localhost:8123](http://localhost:8123)` in your browser, you should see this:  
+Finally, open the URL [http://localhost:8123](http://localhost:8123) in your browser, you should see this:  
 ![](../code-server-ec2/_assets/imgs/2-app-1.png) ![](../code-server-ec2/_assets/imgs/2-app-2.png)
 
 
-### 3. Configuring the Code-Server
+### 4. Configuring the Code-Server
 
 The `_assets/scripts/cloud_devops_tools.sh` bash scripts I've used as `userData` installs Code-Server and only the [Settings-Sync](https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync) extension that will allow restore a previous Code-Server or VS Code settings, even other extensions. For that you need a Gist ID that your previous Code-Server or VS Code has generated. If you don't have one, you can use mine.
 
@@ -115,7 +115,7 @@ Once restored all Code-Server settings, you will see this:
 ![](../code-server-ec2/_assets/imgs/2-app-3c.png)
 
 
-### 4. Cleaning up
+### 5. Cleaning up
 
 ```sh
 $ cdk destroy
