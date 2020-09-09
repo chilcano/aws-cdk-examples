@@ -123,5 +123,6 @@ $ cdk destroy
 
 ## References
 
-1. [Building an affordable remote DevOps desktop on AWS | Apr 9, 2020](https://holisticsecurity.io/2020/04/09/building-an-affordable-remote-devops-desktop-on-aws)
-2. [A Cloud IDE for the masses | Aug 5, 2020 ](https://holisticsecurity.io/2020/08/05/a-cloud-ide-for-the-masses)
+1. [Implementing VSCode-based (Code-Server) on Cloud with AWS CDK - Sep 6, 2020](https://holisticsecurity.io/2020/09/06/implementing-vscode-based-on-cloud-with-aws-cdk) 
+2. [Building an affordable remote DevOps desktop on AWS - Apr 9, 2020](https://holisticsecurity.io/2020/04/09/building-an-affordable-remote-devops-desktop-on-aws)
+3. [A Cloud IDE for the masses - Aug 5, 2020 ](https://holisticsecurity.io/2020/08/05/a-cloud-ide-for-the-masses)
