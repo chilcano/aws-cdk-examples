@@ -4,23 +4,7 @@ A set of samples I used to experiment with AWS CDK.
 
 ## Projects
 
-1. [Simple PHP Application](tree/simple-php-ts-ecs/)
-   * https://github.com/chilcano/aws-cdk-samples/tree/code-server-ec2
-   * 1 container for PHP Webapp exposed through AWS ALB.
-   * CDK TypeScript.
-   * Fargate ECS cluster.
-2. [Simple Frontend(Flask)-Backend(Redis) App using Flask and Redis](simple-frontend-backend-ecs/)
-   * 2 containers, a Frontend Flask app talking to a Backend Redis service to persist timestamps.
-   * CDK TypeScript.
-   * Fargate ECS cluster, 1 VPC, (CloudMap) DNS resolution.
-3. [VS Code / Code-Server in AWS EC2, Ubuntu AMI and UserData](code-server-ec2/)
-4. VS Code / Code-Server in AWS ECS and persisting in EFS.
-   * ECS Cluster, 2 docker instances, using `codercom/code-server` image from Docker Hub.
-   * Unable to overwrite parameters in Dockerfile (e.g. overwrite the password).
-   * Persisting on local file system.
-
 All CDK examples have been converted to `worktree` branches and they can be download a working copy following these steps:
-
 
 1. Clone the repo
 
@@ -50,7 +34,6 @@ $ git branch -a
 $ git worktree add -B simple-php-ts-ecs simple-php-ts-ecs origin/simple-php-ts-ecs
 ```
 
-```sh
 ## References
 
 - [AWS CDK](https://github.com/aws/aws-cdk)
