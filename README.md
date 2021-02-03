@@ -4,7 +4,8 @@ A set of samples I used to experiment with AWS CDK.
 
 ## Projects
 
-1. [Simple PHP Application](simple-php-ts-ecs/)
+1. [Simple PHP Application](tree/simple-php-ts-ecs/)
+   * https://github.com/chilcano/aws-cdk-samples/tree/code-server-ec2
    * 1 container for PHP Webapp exposed through AWS ALB.
    * CDK TypeScript.
    * Fargate ECS cluster.
@@ -18,6 +19,38 @@ A set of samples I used to experiment with AWS CDK.
    * Unable to overwrite parameters in Dockerfile (e.g. overwrite the password).
    * Persisting on local file system.
 
+All CDK examples have been converted to `worktree` branches and they can be download a working copy following these steps:
+
+
+1. Clone the repo
+
+```sh
+$ git clone https://github.com/chilcano/<this-repo>
+```
+
+2. List all branches
+
+```sh
+$ git branch -a
+
++ code-server-ec2
+* main
++ simple-frontend-backend-ecs
++ simple-php-ts-ecs
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/code-server-ec2
+  remotes/origin/main
+  remotes/origin/simple-frontend-backend-ecs
+  remotes/origin/simple-php-ts-ecs
+```
+
+3. Choose the branch where you want to work on
+
+```sh
+$ git worktree add -B simple-php-ts-ecs simple-php-ts-ecs origin/simple-php-ts-ecs
+```
+
+```sh
 ## References
 
 - [AWS CDK](https://github.com/aws/aws-cdk)
