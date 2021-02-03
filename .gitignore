@@ -14,3 +14,4 @@ code-server-ec2
 simple-frontend-backend-ecs
 simple-php-ts-ecs
 stack-pipeline
+api-lambda-pipeline
