@@ -13,3 +13,4 @@ target/
 code-server-ec2
 simple-frontend-backend-ecs
 simple-php-ts-ecs
+stack-pipeline
