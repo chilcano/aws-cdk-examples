@@ -2,17 +2,47 @@
 
 A set of samples I used to experiment with AWS CDK.
 
-## Projects
+## Preparation to work with AWS CDK
 
-All CDK examples have been converted to `worktree` branches and they can be download a working copy following these steps:
+### Install AWS CDK
 
-1. Clone the repo
+```sh
+$ sudo apt install -yqq nodejs npm
+
+$ sudo npm i -g aws-cdk
+```
+
+Versions used in these projects are:
+```sh
+$ nodejs -v
+v10.19.0
+
+$ npm -v
+6.14.4
+
+$ cdk --version
+1.91.0 (build 0f728ce)
+```
+
+### Creating a new AWS CDK project
+
+```sh
+$ mkdir <project-name> && cd <project-name>
+
+$ cdk init --language=typescript
+```
+
+## Available projects in this repository
+
+Some CDK examples have been converted to `worktree` branches and other are in sub folders, all `worktree` projects can be downloaded a working copy following these steps:
+
+1. Clone the repo   
 
 ```sh
 $ git clone https://github.com/chilcano/<this-repo>
 ```
 
-2. List all branches
+2. List all branches  
 
 ```sh
 $ git branch -a
@@ -28,7 +58,7 @@ $ git branch -a
   remotes/origin/simple-php-ts-ecs
 ```
 
-3. Choose the branch where you want to work on
+3. Choose the branch where you want to work on  
 
 ```sh
 $ git worktree add -B simple-php-ts-ecs simple-php-ts-ecs origin/simple-php-ts-ecs
