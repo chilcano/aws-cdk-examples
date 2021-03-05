@@ -10,6 +10,7 @@ target/
 .vagrant
 .vscode
 *.deb
+*.venv
 code-server-ec2
 simple-frontend-backend-ecs
 simple-php-ts-ecs
