@@ -22,9 +22,8 @@ $ pip install boto3
 # freeze py packages
 $ pip freeze > requirements.txt
 
-
-
 # set aws credentials
+$ aws configure --profile ecs-data
 $ export AWS_PROFILE=ecs-data
 
 
