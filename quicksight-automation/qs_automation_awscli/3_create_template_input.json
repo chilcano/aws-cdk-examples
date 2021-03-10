@@ -1,0 +1,17 @@
+{
+    "AwsAccountId": "xxxxxxxxxxxx",
+    "TemplateId": "DemoDashboardTemplate",
+    "Name": "Demo Dashboard Template",
+    "SourceEntity": {
+        "SourceAnalysis": {
+            "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:analysis/7975f7aa-261c-4e7c-b430-305d71e07a8e",
+            "DataSetReferences": [
+                {
+                    "DataSetPlaceholder": "DS1",
+                    "DataSetArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:dataset/DemoDataSet1"
+                }
+            ]
+        }
+    },
+    "VersionDescription": "1"
+}

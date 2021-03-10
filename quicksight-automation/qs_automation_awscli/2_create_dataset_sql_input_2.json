@@ -1,0 +1,62 @@
+{
+    "AwsAccountId": "xxxxxxxxxxxx",
+    "DataSetId": "DemoDataSet2",
+    "Name": "Demo Data Set 2",
+    "PhysicalTableMap": {
+        "DemoDataSet2-CustomerSales": {
+            "CustomSql": {
+                "DataSourceArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:datasource/SampleRedshiftDatasouce",
+                "Name": "Customer Sales",
+                "SqlQuery":"SELECT lineorder.lo_revenue, customer.c_name, customer.c_city FROM public.lineorder INNER JOIN public.customer ON lineorder.lo_custkey = customer.c_custkey",
+                    "Columns": [
+                        {
+                            "Name": "lo_revenue",
+                            "Type": "INTEGER"
+                        },
+                        {
+                            "Name": "c_name",
+                            "Type": "STRING"
+                        },
+                        {
+                            "Name": "c_city",
+                            "Type": "STRING"
+                        }
+                    ]
+ 
+	    }
+        }
+    },
+    "LogicalTableMap": {
+        "DemoDataSet2-CustomerSales-Logical": {
+            "Alias": "Customer Sales",
+            "Source": {
+                "PhysicalTableId": "DemoDataSet2-CustomerSales"
+            }
+        }
+
+    },
+    "ImportMode": "DIRECT_QUERY",
+    "Permissions": [
+        {
+            "Principal": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:user/default/alice",
+            "Actions": [
+                "quicksight:UpdateDataSetPermissions",
+                "quicksight:DescribeDataSet",
+                "quicksight:DescribeDataSetPermissions",
+                "quicksight:PassDataSet",
+                "quicksight:DescribeIngestion",
+                "quicksight:ListIngestions",
+                "quicksight:UpdateDataSet",
+                "quicksight:DeleteDataSet",
+                "quicksight:CreateIngestion",
+                "quicksight:CancelIngestion"
+            ]
+        }
+    ],
+    "Tags": [
+        {
+            "Key": "Name",
+            "Value": "API-DemoDataSet2"
+        }
+    ]
+}

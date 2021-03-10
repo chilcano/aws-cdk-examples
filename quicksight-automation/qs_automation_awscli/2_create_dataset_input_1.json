@@ -1,0 +1,142 @@
+{
+    "AwsAccountId": "xxxxxxxxxxxx",
+    "DataSetId": "DemoDataSet1",
+    "Name": "Demo Data Set 1",
+    "PhysicalTableMap": {
+        "DemoDataSet1-LineOrder": {
+            "RelationalTable": {
+                "DataSourceArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:datasource/SampleRedshiftDatasouce",
+                "Schema": "public",
+                "Name": "lineorder",
+                "InputColumns": [
+                        {
+                            "Name": "lo_custkey",
+                            "Type": "INTEGER"
+                        },
+                        {
+                            "Name": "lo_revenue",
+                            "Type": "INTEGER"
+                        },
+                        {
+                            "Name": "lo_quantity",
+                            "Type": "INTEGER"
+                        },
+                        {
+                            "Name": "lo_orderkey",
+                            "Type": "INTEGER"
+                        },
+                        {
+                            "Name": "lo_shipmode",
+                            "Type": "STRING"
+                        },
+                        {
+                            "Name": "lo_orderdate",
+                            "Type": "INTEGER"
+                        },
+                        {
+                            "Name": "lo_ordertotalprice",
+                            "Type": "INTEGER"
+                        },
+                        {
+                            "Name": "lo_tax",
+                            "Type": "INTEGER"
+                        },
+                        {
+                            "Name": "lo_discount",
+                            "Type": "INTEGER"
+                        }
+                ]
+	    }
+            },
+        "DemoDataSet1-Customer": {
+            "RelationalTable": {
+                "DataSourceArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:datasource/SampleRedshiftDatasouce",
+                "Schema": "public",
+                "Name": "customer",
+                "InputColumns": [
+                        {
+                            "Name": "c_custkey",
+                            "Type": "INTEGER"
+                        },
+                        {
+                            "Name": "c_phone",
+                            "Type": "STRING"
+                        },
+                        {
+                            "Name": "c_address",
+                            "Type": "STRING"
+                        },
+                        {
+                            "Name": "c_name",
+                            "Type": "STRING"
+                        },
+                        {
+                            "Name": "c_city",
+                            "Type": "STRING"
+                        }
+                ]
+            }
+        }
+    },
+    "LogicalTableMap": {
+        "DemoDataSet1-LineOrder-Logical": {
+            "Alias": "LineOrder",
+            "Source": {
+                "PhysicalTableId": "DemoDataSet1-LineOrder"
+            }
+        },
+        "DemoDataSet1-Customer-Logical": { 
+            "Alias": "Customer",
+            "Source": {
+                "PhysicalTableId": "DemoDataSet1-Customer"
+            }
+        },
+        "DemoDataSet1-Intermediate": { 
+            "Alias": "Intermediate",
+            "DataTransforms": [
+                {   
+                    "ProjectOperation": {
+                        "ProjectedColumns": [
+                                "lo_revenue",
+                                "c_name",
+                                "c_city"
+                        ]
+                    }
+                }
+            ],
+            "Source": {
+                "JoinInstruction": {
+                    "LeftOperand": "DemoDataSet1-LineOrder-Logical",
+                    "RightOperand": "DemoDataSet1-Customer-Logical",
+                    "Type": "INNER",
+                    "OnClause": "{lo_custkey} = {c_custkey}"
+                }
+            }
+        }
+
+    },
+    "ImportMode": "DIRECT_QUERY",
+    "Permissions": [
+        {
+            "Principal": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:user/default/alice",
+            "Actions": [
+                "quicksight:UpdateDataSetPermissions",
+                "quicksight:DescribeDataSet",
+                "quicksight:DescribeDataSetPermissions",
+                "quicksight:PassDataSet",
+                "quicksight:DescribeIngestion",
+                "quicksight:ListIngestions",
+                "quicksight:UpdateDataSet",
+                "quicksight:DeleteDataSet",
+                "quicksight:CreateIngestion",
+                "quicksight:CancelIngestion"
+            ]
+        }
+    ],
+    "Tags": [
+        {
+            "Key": "Name",
+            "Value": "API-DemoDataSet1"
+        }
+    ]
+}

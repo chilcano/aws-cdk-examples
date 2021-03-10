@@ -1,0 +1,304 @@
+Create QuickSight resource in Boto3 Python using generated skeleton
+
+https://stackoverflow.com/questions/64732591/aws-lambda-function-with-python-boto3-and-quicksight-sdk-getting-error-messag
+
+
+
+0. Generate skeletons.
+aws quicksight create-data-source --generate-cli-skeleton > 1_create_datasource_input.json
+
+1.1. Create datasource
+aws quicksight create-data-source --cli-input-json file://./1_create_datasource_input.json
+
+{
+    "Status": 202,
+    "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:datasource/SampleRedshiftDatasouce",
+    "DataSourceId": "SampleRedshiftDatasouce",
+    "CreationStatus": "CREATION_IN_PROGRESS",
+    "RequestId": "ac9fb8fe-71d8-4005-a7c9-d66d814e224e"
+}
+
+1.2. Check if datasource was created.
+aws quicksight describe-data-source --aws-account-id $AAI --data-source-id SampleRedshiftDatasouce
+
+{
+    "Status": 200,
+    "DataSource": {
+        "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:datasource/SampleRedshiftDatasouce",
+        "DataSourceId": "SampleRedshiftDatasouce",
+        "Name": "Sample Redshift Datasouce",
+        "Type": "REDSHIFT",
+        "Status": "CREATION_SUCCESSFUL",
+        "CreatedTime": 1574053515.41,
+        "LastUpdatedTime": 1574053516.368,
+        "DataSourceParameters": {
+            "RedshiftParameters": {
+                "Host": "redshift-cluster-1.c6qmmwnqxxxx.us-east-1.redshift.amazonaws.com",
+                "Port": 5439,
+                "Database": "dev",
+                "ClusterId": "redshift-cluster-1"
+            }
+        },
+        "VpcConnectionProperties": {
+            "VpcConnectionArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:vpcConnection/VPC to Redshift"
+        },
+        "SslProperties": {
+            "DisableSsl": false
+        }
+    },
+    "RequestId": "57d2d6d6-ebbf-4e8c-82ab-c38935cae8aa"
+}
+
+2. Create datasets.
+aws quicksight create-data-set --generate-cli-skeleton > 2_create_dataset_input_1.json
+aws quicksight create-data-set --generate-cli-skeleton > 2_create_dataset_sql_input_2.json
+
+
+3.1. Create template.
+aws quicksight create-template --cli-input-json file://./3_create_template_input.json
+
+3.2. Check if template was created.
+aws quicksight describe-template --aws-account-id $AAI --template-id DemoDashboardTemplate
+
+{
+    "Status": 200,
+    "Template": {
+        "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:template/DemoDashboardTemplate",
+        "Name": "Demo Dashboard Template",
+        "Version": {
+            "CreatedTime": 1574137165.136,
+            "VersionNumber": 1,
+            "Status": "CREATION_SUCCESSFUL",
+            "DataSetConfigurations": [
+                {
+                    "Placeholder": "DS1",
+                    "DataSetSchema": {
+                        "ColumnSchemaList": [
+                            {
+                                "Name": "c_city",
+                                "DataType": "STRING"
+                            },
+                            {
+                                "Name": "lo_revenue",
+                                "DataType": "INTEGER"
+                            }
+                        ]
+                    },
+                    "ColumnGroupSchemaList": []
+                }
+            ],
+            "Description": "1",
+            "SourceEntityArn": "arn:aws:quicksight:us-east-1: xxxxxxxxxxxx:analysis/7975f7aa-261c-4e7c-b430-305d71e07a8e"
+        },
+        "TemplateId": "DemoDashboardTemplate",
+        "LastUpdatedTime": 1574137165.104,
+        "CreatedTime": 1574137165.104
+    }
+}
+
+4.1. Create dashboard.
+xxxxx
+
+4.2. Check if dashboard was created.
+aws quicksight describe-dashboard --aws-account-id $AAI --dashboard-id DemoDashboard1
+
+{
+    "Status": 200,
+    "Dashboard": {
+        "DashboardId": "DemoDashboard1",
+        "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:dashboard/DemoDashboard1",
+        "Name": "Demo Dashboard 1",
+        "Version": {
+            "CreatedTime": 1574138252.449,
+            "Errors": [],
+            "VersionNumber": 1,
+            "Status": "CREATION_SUCCESSFUL",
+            "SourceEntityArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:template/DemoDashboardTemplate/version/1",
+            "Description": "1"
+        },
+        "CreatedTime": 1574138252.395,
+        "LastPublishedTime": 1574138252.395,
+        "LastUpdatedTime": 1574138252.449
+    },
+    "RequestId": "62945539-bb63-4faf-b897-8e84ea5644ae"
+}
+
+5.1. Create dataset and configure SPICE.
+aws quicksight create-data-set --aws-account-id $AAI --cli-input-json file://./5_create_dataset_spice_input.json
+
+{
+    "Status": 201,
+    "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:dataset/DemoDataSet3",
+    "DataSetId": "DemoDataSet3",
+    "IngestionArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:dataset/DemoDataSet3/ingestion/589eaf9d-0e21-4572-9ebe-f61b129886d9",
+    "IngestionId": "589eaf9d-0e21-4572-9ebe-f61b129886d9",
+    "RequestId": "7a442521-ab8f-448f-8668-1f0d6823f987"
+}
+
+5.2. Check dataset with SPICE.
+aws quicksight describe-data-set --aws-account-id $AAI --data-set-id DemoDataSet3 | tail -5
+
+"ImportMode": "SPICE",
+"ConsumedSpiceCapacityInBytes": 107027200
+},
+"RequestId": "b0175568-94ed-40e4-85cc-b382979ca377"
+}
+
+5.3. Listing past ingestions in SPICE dataset.
+aws quicksight list-ingestions --aws-account-id $AAI --data-set-id DemoDataSet3
+
+{
+    "Status": 200,
+    "Ingestions": [
+        {
+            "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:dataset/DemoDataSet3/ingestion/589eaf9d-0e21-4572-9ebe-f61b129886d9",
+            "IngestionId": "589eaf9d-0e21-4572-9ebe-f61b129886d9",
+            "IngestionStatus": "COMPLETED",
+            "ErrorInfo": {},
+            "RowInfo": {
+                "RowsIngested": 1126608,
+                "RowsDropped": 0
+            },
+            "CreatedTime": 1574138852.564,
+            "IngestionTimeInSeconds": 24,
+            "IngestionSizeInBytes": 107027200,
+            "RequestSource": "MANUAL",
+            "RequestType": "INITIAL_INGESTION"
+        }
+    ],
+    "RequestId": "ee1d9a6f-a290-418a-a526-8906f4689776"
+}
+
+5.4. Setting ingestions to update the data in datasets from datasource.
+aws quicksight create-ingestion --aws-account-id $AAI --data-set-id DemoDataSet3 --ingestion-id DemoDataSet3-Ingestion2
+{
+    "Status": 201,
+    "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:dataset/DemoDataSet3/ingestion/DemoDataSet3-Ingestion2",
+    "IngestionId": "DemoDataSet3-Ingestion2",
+    "IngestionStatus": "INITIALIZED",
+    "RequestId": "fc1f7eea-1327-41d6-9af7-c12f097ed343"
+}
+
+5.5. Listing ingestions in the state RUNNING.
+aws quicksight list-ingestions --aws-account-id $AAI --data-set-id DemoDataSet3
+
+{
+    "Status": 200,
+    "Ingestions": [
+        {
+            "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:dataset/DemoDataSet3/ingestion/DemoDataSet3-Ingestion2",
+            "IngestionId": "DemoDataSet3-Ingestion2",
+            "IngestionStatus": "RUNNING",
+            "RowInfo": {
+                "RowsIngested": 0
+            },
+            "CreatedTime": 1574139332.876,
+            "RequestSource": "MANUAL",
+            "RequestType": "FULL_REFRESH"
+        },
+        {
+            "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:dataset/DemoDataSet3/ingestion/589eaf9d-0e21-4572-9ebe-f61b129886d9",
+            "IngestionId": "589eaf9d-0e21-4572-9ebe-f61b129886d9",
+            "IngestionStatus": "COMPLETED",
+            "ErrorInfo": {},
+            "RowInfo": {
+                "RowsIngested": 1126608,
+                "RowsDropped": 0
+            },
+            "CreatedTime": 1574138852.564,
+            "IngestionTimeInSeconds": 24,
+            "IngestionSizeInBytes": 107027200,
+            "RequestSource": "MANUAL",
+            "RequestType": "INITIAL_INGESTION"
+        }
+    ],
+    "RequestId": "322c165e-fb90-45bf-8fa5-246d3034a08e"
+}
+
+6. Versioning dashboard.
+aws quicksight update-dashboard-published-version --aws-account-id $AAI --dashboard-id DemoDashboard1 --dashboard-version-number 1
+
+{
+    "DashboardArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:dashboard/DemoDashboard1",
+    "DashboardId": "DemoDashboard1",
+    "RequestId": "c97cdbff-d954-4f5b-a887-28659ad9cc9a"
+ }
+
+7. Aliasing template.
+aws quicksight create-template-alias --aws-account-id $AAI --template-id DemoDashboardTemplate --template-version-number 1 --alias-name PROD
+
+{
+    "RequestId": "c112a48c-14da-439e-b4d8-538b60c1f188",
+    "TemplateAlias": { 
+       "AliasName": "PROD",
+       "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:template/DemoDashboardTemplate/alias/PROD",
+       "TemplateVersionNumber": 1
+    }
+ }
+
+8. Creating a dashboard and set a version and alias (see SourceEntity)
+aws quicksight create-dashboard --generate-cli-skeleton > create-dashboard-cli-input.json
+
+{
+    "AwsAccountId": "xxxxxxxxxxxx",
+    "DashboardId": "DemoDashboard2",
+    "Name": "Demo Dashboard 2",
+    "Permissions": [
+        {
+            "Principal": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:user/default/user/Alice",
+            "Actions": [
+                "quicksight:DescribeDashboard",
+                "quicksight:ListDashboardVersions",
+                "quicksight:UpdateDashboardPermissions",
+                "quicksight:QueryDashboard",
+                "quicksight:UpdateDashboard",
+                "quicksight:DeleteDashboard",
+                "quicksight:DescribeDashboardPermissions",
+                "quicksight:UpdateDashboardPublishedVersion"
+            ]
+        }
+    ],
+    "SourceEntity": {
+        "SourceTemplate": {
+            "DataSetReferences": [
+                {
+                    "DataSetPlaceholder": "DS1",
+                    "DataSetArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:dataset/DemoDataSet2"
+                }
+            ],
+            "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:template/DemoDashboardTemplate/alias/PROD"
+        }
+    },
+    "Tags": [
+        {
+            "Key": "Name",
+            "Value": "API-DemoDashboard"
+        }
+    ],
+    "VersionDescription": "1",
+    "DashboardPublishOptions": {
+        "AdHocFilteringOption": {
+            "AvailabilityStatus": "ENABLED"
+        },
+        "ExportToCSVOption": {
+            "AvailabilityStatus": "ENABLED"
+        },
+        "SheetControlsOption": {
+            "VisibilityState": "EXPANDED"
+        }
+    }
+}
+
+9. Update template alias to point to the new template version
+
+aws quicksight update-template-alias --aws-account-id $AAI --template-id DemoDashboardTemplate --template-version-number 3 --alias-name PROD
+
+{
+    "RequestId": "5ac9ff9e-28c1-4b61-aeab-5949986f5b2b",
+    "TemplateAlias": { 
+       "AliasName": "PROD",
+       "Arn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:template/DemoDashboardTemplate/alias/PROD",
+       "TemplateVersionNumber": 3
+    }
+}
+
