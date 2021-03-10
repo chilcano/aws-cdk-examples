@@ -5,7 +5,7 @@
     "PhysicalTableMap": {
         "DemoDataSet2-CustomerSales": {
             "CustomSql": {
-                "DataSourceArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:datasource/SampleRedshiftDatasouce",
+                "DataSourceArn": "arn:aws:quicksight:us-east-1:xxxxxxxxxxxx:datasource/SampleRedshiftDatasource",
                 "Name": "Customer Sales",
                 "SqlQuery":"SELECT lineorder.lo_revenue, customer.c_name, customer.c_city FROM public.lineorder INNER JOIN public.customer ON lineorder.lo_custkey = customer.c_custkey",
                     "Columns": [
