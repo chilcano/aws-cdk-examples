@@ -17,7 +17,11 @@ $ source .venv/bin/activate
 # only if you have populate this file
 $ pip install -r requirements.txt
 
-$ pip install boto3
+$ pip install boto3 
+
+## install mypy_boto3 (intellisense) and and mypy (static info)
+## Microsoft Pylance is needed? instead Jedy?
+https://mypy-boto3.readthedocs.io/en/latest/
 
 # freeze py packages
 $ pip freeze > requirements.txt
