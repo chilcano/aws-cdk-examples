@@ -19,7 +19,7 @@ chmod +x devops_tools_*.sh
 
 Now, configure AWS, you can set the AWS credential as System Environment Variables or as [AWS Named Profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html). I recommend the last one.
 ```sh
-aws configure --profile ds
+aws configure --profile es
 
 AWS Access Key ID [None]: AKI...
 AWS Secret Access Key [None]: AvO...
@@ -27,9 +27,9 @@ Default region name [None]: eu-west-2
 Default output format [None]: json
 ```
 
-An annoying thing to do everytime you start working with a fresh project is creating a SSH key-pair in your computer or on AWS, for that I've created a bash script that creates a new SSH key-pair in local and upload it to specific or to all AWS' regions. By default the script will create the SSH key-pair in all regions unless configured. 
+An annoying thing to do everytime you start working with a fresh project is creating a SSH key-pair, for that I've created a bash script that creates a new SSH key-pair in local and upload it to specific or to all AWS' regions. By default this script will create the SSH key-pair in all regions unless configured. 
 ```sh
-export AWS_PROFILE=ds
+export AWS_PROFILE=es
 
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/import_ssh_pub_key_to_aws_regions.sh)
 ```
@@ -45,42 +45,28 @@ sudo npm install -g aws-cdk
 mkdir simple-ec2 && cd simple-ec2
 cdk init --language=typescript
 
+// install packages that cdk will use
 npm install @aws-cdk/aws-ec2 @aws-cdk/aws-iam dotenv
-```
-
-
-```sh
-/ ./bin/simple-ec2.ts
-
-
-```
-
-
-```sh
-// ./lib/simple-ec2-stack.ts
-
-
 ```
 
 
 ### 3. Deploy
 
 
-
-Now, we are going to execute our CDK project using the `--profile ds`.
+Now, we are going to execute our CDK project using the `--profile es`.
 ```sh
-cdk list --profile ds
+cdk list --profile es
 SimpleEc2Stack
 
-cdk synth --profile ds
+cdk synth --profile es
 
-cdk deploy --profile ds
+cdk deploy --profile es --require-approval never --outputs-file output.json
 ```
 
 ### 4. Accessing the Instance
 
 ```sh
-ssh ec2-user@18.132.195.59 -i ~/.ssh/tmpkey
+ssh ubuntu@$(jq -r .SimpleEc2Stack.NODEIP output.json) -i ~/.ssh/tmpkey
 ```
 
 ### 5. Add a user_data script
@@ -97,6 +83,6 @@ Your server is running PHP version 5.4.16 but WordPress 5.8 requires at least 5.
 ### 7. Destroy the Instance
 
 ```sh
-cdk destroy --profile ds
+cdk destroy --profile es 
 
 ```

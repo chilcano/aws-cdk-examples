@@ -7,6 +7,8 @@ import * as fs from 'fs'
 
 require('dotenv').config()
 
+const instanceName = 'node-sast';
+
 const config = {
   env: {
     account: process.env.AWS_ACCOUNT_NUMBER,
@@ -30,7 +32,7 @@ export class SimpleEc2Stack extends cdk.Stack {
     // instance can or can not do
       const role = new iam.Role(
         this,
-        'simple-instance-1-role', // this is a unique id that will represent this resource in a Cloudformation template
+        instanceName + '-role', // this is a unique id that will represent this resource in a Cloudformation template
         { assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com') }
       )
 
@@ -38,11 +40,11 @@ export class SimpleEc2Stack extends cdk.Stack {
     // A security group acts as a virtual firewall for your instance to control inbound and outbound traffic.
     const securityGroup = new ec2.SecurityGroup(
       this,
-      'simple-instance-1-sg',
+      instanceName + '-sg',
       {
         vpc: defaultVpc,
         allowAllOutbound: true, // will let your instance send outboud traffic
-        securityGroupName: 'simple-instance-1-sg',
+        securityGroupName: instanceName + '-sg',
       }
     )
 
@@ -66,12 +68,15 @@ export class SimpleEc2Stack extends cdk.Stack {
     )
 
     // https://cloud-images.ubuntu.com/locator/ec2/
-    // owner: 099720109477 (ubuntu) 
+    // owner: 099720109477 (ubuntu)
+    // focal, 20.04 LTS, amd64, hvm:ebs-ssd, 20210720
     const imgLinuxUbu = new ec2.GenericLinuxImage({  
-      'us-east-1': 'ami-05cf2c352da0bfb2e',
-      'us-east-2': 'ami-0e45766c39d6d6e73',
-      'us-west-1': 'ami-0b10e1018d4058364',
-      'us-west-2': 'ami-0ba8629bff503c084'
+      'eu-central-1': 'ami-05e1e66d082e56118',
+      'eu-north-1': 'ami-00888f2a5f9be4390',
+      'eu-south-1': 'ami-06a3346e9e869f9b1',
+      'eu-west-1': 'ami-0298c9e0d2c86b0ed',
+      'eu-west-2': 'ami-0230a6736b38ae83e',
+      'eu-west-3': 'ami-06d3fffafe8d48b35'
     });
 
     const imgLinuxAmzn = ec2.MachineImage.latestAmazonLinux({
@@ -79,22 +84,19 @@ export class SimpleEc2Stack extends cdk.Stack {
     })
 
     // Finally lets provision our ec2 instance
-    const instance = new ec2.Instance(this, 'simple-instance-1', {
+    const instance = new ec2.Instance(this, instanceName, {
       vpc: defaultVpc,
       role: role,
       securityGroup: securityGroup,
-      instanceName: 'simple-instance-1',
+      instanceName: instanceName,
       instanceType: ec2.InstanceType.of( // t2.micro has free tier usage in aws
         ec2.InstanceClass.T2,
-        ec2.InstanceSize.MICRO
-        // ec2.InstanceClass.T2,
-        // ec2.InstanceSize.MEDIUM        
+        //ec2.InstanceSize.MICRO
+        ec2.InstanceSize.MEDIUM        
       ),
-      // machineImage: ec2.MachineImage.latestAmazonLinux({
-      //   generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
-      // }),
-      machineImage: imgLinuxAmzn,
-      //keyName: 'simple-instance-1-key', // we will create this in the console before we deploy
+      //machineImage: imgLinuxAmzn,
+      machineImage: imgLinuxUbu,
+      //keyName: instanceName + '-key', // we will create this in the console before we deploy
       keyName: 'tmpkey',
     })
 
@@ -106,8 +108,7 @@ export class SimpleEc2Stack extends cdk.Stack {
 
     // cdk lets us output properties of the resources we create after they are created
     // we want the ip address of this new instance so we can ssh into it later
-    new cdk.CfnOutput(this, 'simple-instance-1-output', {
-      value: instance.instancePublicIp
-    })
+    new cdk.CfnOutput(this, 'NODEIP', { value: instance.instancePublicIp })
+    new cdk.CfnOutput(this, 'NODEDNS', { value: instance.instancePublicDnsName })
   }
 }

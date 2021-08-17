@@ -1,0 +1,6 @@
+{
+  "SimpleEc2Stack": {
+    "NODEDNS": "ec2-18-132-37-250.eu-west-2.compute.amazonaws.com",
+    "NODEIP": "18.132.37.250"
+  }
+}
