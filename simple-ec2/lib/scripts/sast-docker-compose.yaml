@@ -7,7 +7,7 @@ services:
     volumes:
        - jenkins_data:/var/jenkins_home
     networks:
-      - sonarnet
+      - sast_net
     ports:
       - '8080:8080'
       - '50000:50000'
@@ -20,7 +20,7 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
     networks:
-      - sonarnet
+      - sast_net
     ports:
       - '9000:9000'
     environment:
@@ -31,7 +31,7 @@ services:
   db:
     image: postgres
     networks:
-      - sonarnet
+      - sast_net
     environment:
       - POSTGRES_USER=sonar
       - POSTGRES_PASSWORD=sonar
@@ -40,7 +40,7 @@ services:
       - postgresql_data:/var/lib/postgresql/data
 
 networks:
-  sonarnet:
+  sast_net:
     driver: bridge
 
 volumes:
