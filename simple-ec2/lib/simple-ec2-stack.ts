@@ -67,6 +67,24 @@ export class SimpleEc2Stack extends cdk.Stack {
       'Allows HTTPS access from Internet'
     )
 
+    securityGroup.addIngressRule(
+      ec2.Peer.anyIpv4(),
+      ec2.Port.tcp(8080),
+      'Allows Jenkins HTTP access from Internet'
+    )
+
+    securityGroup.addIngressRule(
+      ec2.Peer.anyIpv4(),
+      ec2.Port.tcp(5000),
+      'Allows Jenkins HTTPS access from Internet'
+    )
+
+    securityGroup.addIngressRule(
+      ec2.Peer.anyIpv4(),
+      ec2.Port.tcp(9000),
+      'Allows SonarQube HTTP access from Internet'
+    )
+
     // https://cloud-images.ubuntu.com/locator/ec2/
     // owner: 099720109477 (ubuntu)
     // focal, 20.04 LTS, amd64, hvm:ebs-ssd, 20210720

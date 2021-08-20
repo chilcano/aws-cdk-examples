@@ -78,6 +78,36 @@ We are going to install and configure:
 3. Checkmarx KICS
 
 ```sh
+$ docker-compose --version
+docker-compose version 1.25.0, build unknown
+
+$ docker --version
+Docker version 20.10.7, build 20.10.7-0ubuntu1~20.04.1
+
+$ wget https://raw.githubusercontent.com/fischer1983/docker-compose-jenkins-sonarqube/master/docker-compose.yml
+
+$ wget https://raw.githubusercontent.com/chilcano/aws-cdk-examples/main/simple-ec2/lib/scripts/sast-docker-compose.yaml
+
+$ sudo docker-compose -f sast-docker-compose.yaml up -d
+
+...
+jenkins_1    | *************************************************************
+jenkins_1    |
+jenkins_1    | Jenkins initial setup is required. An admin user has been created and a password generated.
+jenkins_1    | Please use the following password to proceed to installation:
+jenkins_1    |
+jenkins_1    | ef37127444f04bf4a784b1d00bf703c2
+jenkins_1    |
+jenkins_1    | This may also be found at: /var/jenkins_home/secrets/initialAdminPassword
+jenkins_1    |
+jenkins_1    | *************************************************************
+
+$ sudo docker-compose ps
+      Name                    Command               State                                           Ports
+--------------------------------------------------------------------------------------------------------------------------------------------------
+sast_db_1          docker-entrypoint.sh postgres    Up      5432/tcp
+sast_jenkins_1     /sbin/tini -- /usr/local/b ...   Up      0.0.0.0:50000->50000/tcp,:::50000->50000/tcp, 0.0.0.0:8080->8080/tcp,:::8080->8080/tcp
+sast_sonarqube_1   ./bin/run.sh                     Up      0.0.0.0:9000->9000/tcp,:::9000->9000/tcp
 
 ```
 
@@ -91,3 +121,15 @@ We are going to install and configure:
 cdk destroy --profile es 
 
 ```
+
+
+## Troubleshooting
+
+### 1. Tailing the cloud-init log
+```sh
+$ tail -fn 9000 /var/log/cloud-init-output.log
+
+```
+
+### 2. Get versions
+
