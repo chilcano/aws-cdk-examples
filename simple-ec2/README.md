@@ -69,12 +69,17 @@ cdk deploy --profile es --require-approval never --outputs-file output.json
 ssh ubuntu@$(jq -r .SimpleEc2Stack.NODEIP output.json) -i ~/.ssh/tmpkey
 ```
 
-### 5. Add a user_data script
+### 5. Add user_data script
 
+We are going to install and configure:
 
-http://35.176.152.234/blog/
-Your server is running PHP version 5.4.16 but WordPress 5.8 requires at least 5.6.20.
+1. Jenkins as CI/CD server
+2. Caddy as Reverse Proxy over TLS
+3. Checkmarx KICS
 
+```sh
+
+```
 
 
 

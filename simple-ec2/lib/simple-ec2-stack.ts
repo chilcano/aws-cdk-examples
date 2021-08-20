@@ -103,7 +103,8 @@ export class SimpleEc2Stack extends cdk.Stack {
     // add user script to instance
     // this script runs when the instance is started 
     instance.addUserData(
-      fs.readFileSync('lib/install_wp_amzn.sh', 'utf8')
+      //fs.readFileSync('lib/install_wp_amzn.sh', 'utf8')
+      fs.readFileSync('lib/install_ubuntu_sast_tpl.sh', 'utf8')
     )
 
     // cdk lets us output properties of the resources we create after they are created
