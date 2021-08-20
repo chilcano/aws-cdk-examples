@@ -16,3 +16,4 @@ target/
 ##simple-php-ts-ecs
 #stack-pipeline
 #api-lambda-pipeline
+output.json
