@@ -17,7 +17,11 @@ chmod +x devops_tools_*.sh
 . devops_tools_install_v3.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
 ```
 
-Now, configure AWS, you can set the AWS credential as System Environment Variables or as [AWS Named Profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html). I recommend the last one.
+Now, configure AWS, you can set the AWS credential as System Environment Variables or as [AWS Named Profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html). I recommend the last one, before listing the created profiles.
+```sh
+aws configure list-profiles
+```
+Create it if it has not been created.
 ```sh
 aws configure --profile es
 
@@ -69,6 +73,13 @@ cdk deploy --profile es --require-approval never --outputs-file output.json
 ssh ubuntu@$(jq -r .SimpleEc2Stack.NODEIP output.json) -i ~/.ssh/tmpkey
 ```
 
+And check if user_data bash script was executed successfully.
+```sh
+tail -fn 9000 /var/log/cloud-init-output.log
+
+```
+
+
 ### 5. Add user_data script
 
 We are going to install and configure:
@@ -78,28 +89,19 @@ We are going to install and configure:
 3. Checkmarx KICS
 
 ```sh
-$ docker --version
+docker --version
 Docker version 20.10.7, build 20.10.7-0ubuntu1~20.04.1
 
-$ docker-compose --version
+docker-compose --version
 docker-compose version 1.25.0, build unknown
 
+
+
 // https://github.com/fischer1983/docker-compose-jenkins-sonarqube
-$ wget https://raw.githubusercontent.com/chilcano/aws-cdk-examples/main/simple-ec2/lib/scripts/sast-docker-compose.yaml
+mkdir sast; cd sast
+wget https://raw.githubusercontent.com/chilcano/aws-cdk-examples/main/simple-ec2/lib/scripts/sast-docker-compose.yaml
 
-$ sudo docker-compose -f sast-docker-compose.yaml up -d
-
-...
-jenkins_1    | *************************************************************
-jenkins_1    |
-jenkins_1    | Jenkins initial setup is required. An admin user has been created and a password generated.
-jenkins_1    | Please use the following password to proceed to installation:
-jenkins_1    |
-jenkins_1    | ef37127444f04bf4a784b1d00bf703c2
-jenkins_1    |
-jenkins_1    | This may also be found at: /var/jenkins_home/secrets/initialAdminPassword
-jenkins_1    |
-jenkins_1    | *************************************************************
+sudo docker-compose -f sast-docker-compose.yaml up -d
 
 $ sudo docker-compose ps
       Name                    Command               State                                           Ports
@@ -107,20 +109,24 @@ $ sudo docker-compose ps
 sast_db_1          docker-entrypoint.sh postgres    Up      5432/tcp
 sast_jenkins_1     /sbin/tini -- /usr/local/b ...   Up      0.0.0.0:50000->50000/tcp,:::50000->50000/tcp, 0.0.0.0:8080->8080/tcp,:::8080->8080/tcp
 sast_sonarqube_1   ./bin/run.sh                     Up      0.0.0.0:9000->9000/tcp,:::9000->9000/tcp
-
-$ exit
 ```
 
-Jenkins: 
+### 6. Accessing to Jenkins
+
+
+From EC2 instance, let's get Jenkins initial generated password from Docker instance:
 ```sh
-$ jenkins=http://$(jq -r .SimpleEc2Stack.NODEIP output.json):8080; echo $jenkins
+JENKINS_INI_PWD=$(sudo docker exec -it sast_jenkins_1 cat /var/jenkins_home/secrets/initialAdminPassword); echo $JENKINS_INI_PWD
 ```
 
-SonarQube:
+From other terminal in your local computer and using the previous `JENKINS_INI_PWD`, open Jenkins Server URL: 
 ```sh
-$ sonarqube=http://$(jq -r .SimpleEc2Stack.NODEIP output.json):9000; echo $sonarqube
-
+JENKINS_LOCAL_URL=http://$(jq -r .SimpleEc2Stack.NODEIP output.json):8080; echo $JENKINS_LOCAL_URL
 ```
+
+### 7. Configure and install Jenkins plugins
+
+
 
 
 

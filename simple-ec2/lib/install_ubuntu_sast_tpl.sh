@@ -14,3 +14,9 @@ sudo apt-get install -y fontconfig jq git
 # # fancygit light-double-line
 # sudo -u ${username} bash -c 'source /home/$USER/.bashrc'
 
+VER_DOCKER=$(docker --version)
+VER_DOCKER_COMPOSE=$(docker-compose --version)
+
+echo ${VER_DOCKER}
+echo ${VER_DOCKER_COMPOSE}
+
