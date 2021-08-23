@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "--> Installing Docker Compose"
+echo "--> Installing Docker and Docker Compose"
 sudo apt-get update
 sudo apt-get install -y docker-compose
 
@@ -19,4 +19,3 @@ VER_DOCKER_COMPOSE=$(docker-compose --version)
 
 echo ${VER_DOCKER}
 echo ${VER_DOCKER_COMPOSE}
-

@@ -2,7 +2,7 @@
 
 source set_jenkins_env_vars.sh
 
-echo -n "Starting special Docker Jenkins build. Please enter password for Jenkins key store : "
+echo -n "Starting special Docker Jenkins build. Please enter password for Jenkins KeyStore : "
 # read -es psswrd
 
 psswrd=`gpg --quiet --gen-random --armor 0 24 |& tail -1`

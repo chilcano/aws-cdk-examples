@@ -104,7 +104,7 @@ These scripts will install Jenkins, plugins and HTTPS configuration in Docker.
 ```sh
 git clone https://github.com/chilcano/aws-cdk-examples
 cd aws-cdk-examples/simple-ec2/lib/scripts/jcasc
-source ./build_jenkins_docker_image.sh
+sudo ./build_jenkins_docker_image.sh
 ```
 
 Once completed the installation, let's get access to Jenkins over HTTPS. 
