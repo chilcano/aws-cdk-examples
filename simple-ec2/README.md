@@ -3,6 +3,7 @@
 ## Reference
 
 https://dev.to/emmanuelnk/part-3-simple-ec2-instance-awesome-aws-cdk-37ia
+https://www.digitalocean.com/community/tutorials/how-to-automate-jenkins-setup-with-docker-and-jenkins-configuration-as-code
 
 
 ## Steps
@@ -80,7 +81,7 @@ tail -fn 9000 /var/log/cloud-init-output.log
 ```
 
 
-### 5. Add user_data script
+### 5. Installing Jenkins through an user_data script
 
 We are going to install and configure:
 
@@ -88,15 +89,33 @@ We are going to install and configure:
 2. Caddy as Reverse Proxy over TLS
 3. Checkmarx KICS
 
+Check Docker and Docker-Compose
 ```sh
 docker --version
 Docker version 20.10.7, build 20.10.7-0ubuntu1~20.04.1
 
 docker-compose --version
 docker-compose version 1.25.0, build unknown
+```
+
+#### 5.1. Jenkins configuration as code (JCASC) and Docker
+
+These scripts will install Jenkins, plugins and HTTPS configuration in Docker.
+```sh
+git clone https://github.com/chilcano/aws-cdk-examples
+cd aws-cdk-examples/simple-ec2/lib/scripts/jcasc
+source ./build_jenkins_docker_image.sh
+```
+
+Once completed the installation, let's get access to Jenkins over HTTPS. 
+```sh
+JENKINS_LOCAL_URL_HTTPS=https://$(jq -r .SimpleEc2Stack.NODEIP output.json):8443; echo $JENKINS_LOCAL_URL_HTTPS
+```
 
 
+#### 5.2. Jenkins and other tools with Docker Compose
 
+```sh
 // https://github.com/fischer1983/docker-compose-jenkins-sonarqube
 mkdir sast; cd sast
 wget https://raw.githubusercontent.com/chilcano/aws-cdk-examples/main/simple-ec2/lib/scripts/sast-docker-compose.yaml
@@ -111,9 +130,7 @@ sast_jenkins_1     /sbin/tini -- /usr/local/b ...   Up      0.0.0.0:50000->50000
 sast_sonarqube_1   ./bin/run.sh                     Up      0.0.0.0:9000->9000/tcp,:::9000->9000/tcp
 ```
 
-### 6. Accessing to Jenkins
-
-
+Once completed the installation, let's get access to Jenkins.  
 From EC2 instance, let's get Jenkins initial generated password from Docker instance:
 ```sh
 JENKINS_INI_PWD=$(sudo docker exec -it sast_jenkins_1 cat /var/jenkins_home/secrets/initialAdminPassword); echo $JENKINS_INI_PWD
@@ -123,9 +140,6 @@ From other terminal in your local computer and using the previous `JENKINS_INI_P
 ```sh
 JENKINS_LOCAL_URL=http://$(jq -r .SimpleEc2Stack.NODEIP output.json):8080; echo $JENKINS_LOCAL_URL
 ```
-
-### 7. Configure and install Jenkins plugins
-
 
 
 
