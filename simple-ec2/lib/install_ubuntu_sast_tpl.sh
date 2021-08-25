@@ -19,7 +19,7 @@ sudo apt-get -y install default-jre
 
 VER_DOCKER=$(docker --version)
 VER_DOCKER_COMPOSE=$(docker-compose --version)
-VER_JAVA=$(java --version)
+VER_JAVA=$(java --version 2>&1 | sed 1q)
 
 echo ${VER_DOCKER}
 echo ${VER_DOCKER_COMPOSE}

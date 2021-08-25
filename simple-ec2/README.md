@@ -84,49 +84,45 @@ You should see this if it worked without errors.
 ...
 Docker version 20.10.7, build 20.10.7-0ubuntu1~20.04.1
 docker-compose version 1.25.0, build unknown
+openjdk 11.0.11 2021-04-20
 Cloud-init v. 21.2-3-g899bfaa9-0ubuntu2~20.04.1 running 'modules:final' at Wed, 25 Aug 2021 14:35:40 +0000. Up 14.93 seconds.
 Cloud-init v. 21.2-3-g899bfaa9-0ubuntu2~20.04.1 finished at Wed, 25 Aug 2021 14:36:27 +0000. Datasource DataSourceEc2Local.  Up 61.41 seconds
 ```
 
-
 ### 5. Installing Jenkins
 
 We are going to install and configure Jenkins as CI/CD server and some plugins in automatic way, once installed, I will create a Jenkins Pipeline wich will use Checkmarx KICS.
-
 
 #### 5.1. Jenkins configuration as code (JCasC) and Docker
 
 Next scripts will install Jenkins, plugins and HTTPS configuration in Docker.
 ```sh
 git clone https://github.com/chilcano/aws-cdk-examples
-cd aws-cdk-examples/simple-ec2/lib/scripts/jcasc
+cd aws-cdk-examples/simple-ec2/lib/scripts/jcasc/src/
 sudo ./jenkins_docker_build.sh
 ```
+
+
+
+
+WARN: install-plugins.sh is deprecated, please switch to jenkins-plugin-cli
+
+
+
 
 Check if `jenkins/jcasc` image has been created:
 ```sh
 sudo docker images
-
-REPOSITORY        TAG         IMAGE ID       CREATED          SIZE
-jenkins           jcasc       099fcfb96ee1   17 minutes ago   545MB
-jenkins/jenkins   lts-jdk11   619aabbe0502   3 hours ago      441MB
 ```
 
 Once built, run the custom image by running `docker run` command:
 ```sh
 sudo ./jenkins_docker_run.sh
-
-CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS         PORTS                                                  NAMES
-66b8e2e63d89   jenkins:jcasc   "/sbin/tini -- /usr/…"   6 minutes ago   Up 6 minutes   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 50000/tcp   jcasc
-
 ```
 
 Check if the `jcasc` docker instance is running:
 ```sh
 sudo docker ps -a
-
-CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS         PORTS                                                  NAMES
-66b8e2e63d89   jenkins:jcasc   "/sbin/tini -- /usr/…"   6 minutes ago   Up 6 minutes   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 50000/tcp   jcasc
 ```
 
 Once verified the installation, let's get access to Jenkins over HTTPS. 
