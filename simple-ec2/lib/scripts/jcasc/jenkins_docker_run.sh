@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source jenkins_docker_run_set_envvars.sh
+source jenkins_docker_set_envvars.sh
 
 echo -n "Starting Docker Jenkins container. Please enter password for '$JENKINS_INITIAL_ADMIN_NAME' user: "
 # read -es psswrd

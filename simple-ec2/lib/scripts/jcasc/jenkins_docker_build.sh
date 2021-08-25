@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source jenkins_docker_run_set_envvars.sh
+source jenkins_docker_set_envvars.sh
 
 echo -n "Starting Docker Jenkins build. Please enter password for Jenkins KeyStore : "
 # read -es psswrd

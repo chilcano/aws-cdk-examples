@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../jenkins_docker_run_set_envvars.sh
+source ../jenkins_docker_set_envvars.sh
 
 psswrd=`cat ../${JENKINS_KEYSTORE_PASS_FILE}`
 
