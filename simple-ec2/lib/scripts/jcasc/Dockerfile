@@ -1,4 +1,8 @@
-FROM jenkins/jenkins:latest
+FROM jenkins/jenkins:lts-jdk11
+
+# This is deprecated and JDK/Keytool is not installed?
+#FROM jenkins/jenkins:latest
+
 # VOLUME /var/jenkins_home
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 ENV CASC_JENKINS_CONFIG /usr/share/jenkins/ref/casc.yaml
