@@ -77,7 +77,15 @@ ssh ubuntu@$(jq -r .SimpleEc2Stack.NODEIP output.json) -i ~/.ssh/tmpkey
 And check if user_data bash script was executed successfully.
 ```sh
 tail -fn 9000 /var/log/cloud-init-output.log
+```
 
+You should see this if it worked without errors.
+ ```sh
+...
+Docker version 20.10.7, build 20.10.7-0ubuntu1~20.04.1
+docker-compose version 1.25.0, build unknown
+Cloud-init v. 21.2-3-g899bfaa9-0ubuntu2~20.04.1 running 'modules:final' at Wed, 25 Aug 2021 14:35:40 +0000. Up 14.93 seconds.
+Cloud-init v. 21.2-3-g899bfaa9-0ubuntu2~20.04.1 finished at Wed, 25 Aug 2021 14:36:27 +0000. Datasource DataSourceEc2Local.  Up 61.41 seconds
 ```
 
 
@@ -89,14 +97,6 @@ We are going to install and configure:
 2. Caddy as Reverse Proxy over TLS
 3. Checkmarx KICS
 
-Check Docker and Docker-Compose
-```sh
-docker --version
-Docker version 20.10.7, build 20.10.7-0ubuntu1~20.04.1
-
-docker-compose --version
-docker-compose version 1.25.0, build unknown
-```
 
 #### 5.1. Jenkins configuration as code (JCASC) and Docker
 

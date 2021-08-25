@@ -12,5 +12,5 @@ openssl pkcs12 -export -in jenkins_selfsigned.crt -inkey jenkins_selfsigned.key 
 
 rm -f $JENKINS_KEYSTORE_FILE
 
-# Import to Jenkins KeyStore
+# Java KeyTools must be installed to import to Jenkins KeyStore
 keytool -importkeystore -srckeystore jenkins_selfsigned.p12 -srcstoretype PKCS12 -srcstorepass "$psswrd" -deststoretype PKCS12 -destkeystore $JENKINS_KEYSTORE_FILE -deststorepass "$psswrd"
