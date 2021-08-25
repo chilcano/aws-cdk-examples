@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source set_jenkins_env_vars.sh
+source jenkins_docker_run_set_envvars.sh
 
-echo -n "Starting special Docker Jenkins build. Please enter password for Jenkins KeyStore : "
+echo -n "Starting Docker Jenkins build. Please enter password for Jenkins KeyStore : "
 # read -es psswrd
 
 psswrd=`gpg --quiet --gen-random --armor 0 24 |& tail -1`
@@ -13,4 +13,5 @@ cd secrets
 ./create_secrets.sh $psswrd
 cd ..
 
+# Build the image
 docker build -t jenkins:jcasc .

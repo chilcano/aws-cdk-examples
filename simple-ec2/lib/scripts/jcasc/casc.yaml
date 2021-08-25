@@ -19,5 +19,6 @@ security:
         strategy: triggeringUsersAuthorizationStrategy
 unclassified:
   location:
-    url: http://localhost:8888/
+    #url: http://localhost:8888/
+    url: http://localhost:8080/
     

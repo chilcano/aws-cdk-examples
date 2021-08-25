@@ -89,25 +89,47 @@ Cloud-init v. 21.2-3-g899bfaa9-0ubuntu2~20.04.1 finished at Wed, 25 Aug 2021 14:
 ```
 
 
-### 5. Installing Jenkins through an user_data script
+### 5. Installing Jenkins
 
-We are going to install and configure:
-
-1. Jenkins as CI/CD server
-2. Caddy as Reverse Proxy over TLS
-3. Checkmarx KICS
+We are going to install and configure Jenkins as CI/CD server and some plugins in automatic way, once installed, I will create a Jenkins Pipeline wich will use Checkmarx KICS.
 
 
-#### 5.1. Jenkins configuration as code (JCASC) and Docker
+#### 5.1. Jenkins configuration as code (JCasC) and Docker
 
-These scripts will install Jenkins, plugins and HTTPS configuration in Docker.
+Next scripts will install Jenkins, plugins and HTTPS configuration in Docker.
 ```sh
 git clone https://github.com/chilcano/aws-cdk-examples
 cd aws-cdk-examples/simple-ec2/lib/scripts/jcasc
-sudo ./build_jenkins_docker_image.sh
+sudo ./jenkins_docker_build.sh
 ```
 
-Once completed the installation, let's get access to Jenkins over HTTPS. 
+Check if `jenkins/jcasc` image has been created:
+```sh
+sudo docker images
+
+REPOSITORY        TAG         IMAGE ID       CREATED          SIZE
+jenkins           jcasc       099fcfb96ee1   17 minutes ago   545MB
+jenkins/jenkins   lts-jdk11   619aabbe0502   3 hours ago      441MB
+```
+
+Once built, run the custom image by running `docker run` command:
+```sh
+sudo ./jenkins_docker_run.sh
+
+CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS         PORTS                                                  NAMES
+66b8e2e63d89   jenkins:jcasc   "/sbin/tini -- /usr/…"   6 minutes ago   Up 6 minutes   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 50000/tcp   jcasc
+
+```
+
+Check if the `jcasc` docker instance is running:
+```sh
+sudo docker ps -a
+
+CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS         PORTS                                                  NAMES
+66b8e2e63d89   jenkins:jcasc   "/sbin/tini -- /usr/…"   6 minutes ago   Up 6 minutes   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 50000/tcp   jcasc
+```
+
+Once verified the installation, let's get access to Jenkins over HTTPS. 
 ```sh
 JENKINS_LOCAL_URL_HTTPS=https://$(jq -r .SimpleEc2Stack.NODEIP output.json):8443; echo $JENKINS_LOCAL_URL_HTTPS
 ```

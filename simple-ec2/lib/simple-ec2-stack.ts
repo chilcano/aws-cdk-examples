@@ -75,7 +75,7 @@ export class SimpleEc2Stack extends cdk.Stack {
 
     securityGroup.addIngressRule(
       ec2.Peer.anyIpv4(),
-      ec2.Port.tcp(5000),
+      ec2.Port.tcp(8443),
       'Allows Jenkins HTTPS access from Internet'
     )
 

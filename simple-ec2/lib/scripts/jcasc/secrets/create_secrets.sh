@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../set_jenkins_env_vars.sh
+source ../jenkins_docker_run_set_envvars.sh
 
 psswrd=`cat ../${JENKINS_KEYSTORE_PASS_FILE}`
 
@@ -12,5 +12,5 @@ openssl pkcs12 -export -in jenkins_selfsigned.crt -inkey jenkins_selfsigned.key 
 
 rm -f $JENKINS_KEYSTORE_FILE
 
-# Java KeyTools must be installed to import to Jenkins KeyStore
+# Java KeyTool must be installed to import to Jenkins KeyStore
 keytool -importkeystore -srckeystore jenkins_selfsigned.p12 -srcstoretype PKCS12 -srcstorepass "$psswrd" -deststoretype PKCS12 -destkeystore $JENKINS_KEYSTORE_FILE -deststorepass "$psswrd"
