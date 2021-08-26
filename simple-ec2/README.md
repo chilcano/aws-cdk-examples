@@ -38,30 +38,33 @@ Default output format [None]: json
 An annoying thing to do everytime you start working with a fresh project is creating a SSH key-pair, for that I've created a bash script that creates a new SSH key-pair in local and upload it to specific or to all AWS' regions. By default this script will create the SSH key-pair in all regions unless configured. 
 ```sh
 export AWS_PROFILE=es
-
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/import_ssh_pub_key_to_aws_regions.sh)
 ```
 
-
 ### 2. Install and setup CDK
 
-Update CDK, if needed, and create an empty Project.
+First of all, update CDK. 
 ```sh
-// update cdk
 sudo npm install -g aws-cdk
+```
 
+To create an empty CDK project, execute next commands. 
+```sh
 mkdir simple-ec2 && cd simple-ec2
 cdk init --language=typescript
+```
 
-// install packages that cdk will use
+But in this case, you don't need it because you can clone this repository. Once cloned, just install all packages required.
+
+```sh
+git clone https://github.com/chilcano/aws-cdk-examples.git
+cd aws-cdk-examples/simple-ec2/
 npm install @aws-cdk/aws-ec2 @aws-cdk/aws-iam dotenv
 ```
 
-
 ### 3. Deploy
 
-
-Now, we are going to execute our CDK project using the `--profile es`.
+Now, we are going to execute our CDK project using the AWS Profile already configured (`--profile es`).
 ```sh
 cdk list --profile es
 SimpleEc2Stack
@@ -71,13 +74,16 @@ cdk synth --profile es
 cdk deploy --profile es --require-approval never --outputs-file output.json
 ```
 
-### 4. Accessing the Instance
+This CDK project will generate the `output.json` file with the public IP and Hostname needed in the next step.
 
+### 4. Accessing the EC2 Instance
+
+I require above `output.json` and `~/.ssh/tmpkey` files. Then, make sure both files have been created successfully.
 ```sh
 ssh ubuntu@$(jq -r .SimpleEc2Stack.NODEIP output.json) -i ~/.ssh/tmpkey
 ```
 
-And check if user_data bash script was executed successfully.
+Now, check if `user_data_ubuntu_reqs.sh` bash script was executed successfully. Although, in this case, it only pre-installs Git, Docker and Java.
 ```sh
 tail -fn 9000 /var/log/cloud-init-output.log
 ```
@@ -92,96 +98,49 @@ Cloud-init v. 21.2-3-g899bfaa9-0ubuntu2~20.04.1 running 'modules:final' at Wed, 
 Cloud-init v. 21.2-3-g899bfaa9-0ubuntu2~20.04.1 finished at Wed, 25 Aug 2021 14:36:27 +0000. Datasource DataSourceEc2Local.  Up 61.41 seconds
 ```
 
-### 5. Installing Jenkins
+### 5. Jenkins in Docker and Jenkins configuration as code (JCasC)
 
-We are going to install and configure Jenkins as CI/CD server and some plugins in automatic way, once installed, I will create a Jenkins Pipeline wich will use Checkmarx KICS.
-
-#### 5.1. Jenkins configuration as code (JCasC) and Docker
-
-Next scripts will install Jenkins, plugins and HTTPS configuration in Docker.
+In order to install Jenkins in an automated way and avoid to configure initial user, enable HTTPS and install plugins, I'm going to user [JCasC](https://www.jenkins.io/projects/jcasc/) approach. Execute next commands from EC2 instance Terminal.
 ```sh
-git clone https://github.com/chilcano/aws-cdk-examples
-cd aws-cdk-examples/simple-ec2/lib/scripts/jcasc/src/
+cd aws-cdk-examples/simple-ec2/_scripts/jcasc/src/
 sudo ./jenkins_docker_build.sh
 ```
 
-
-
-
-WARN: install-plugins.sh is deprecated, please switch to jenkins-plugin-cli
-
-
-
-
-Check if `jenkins/jcasc` image has been created:
+Check if `jenkins/jcasc` Docker image has been created.
 ```sh
 sudo docker images
 ```
 
-Once built, run the custom image by running `docker run` command:
+Once built, run the custom image by running `docker run` command.
 ```sh
 sudo ./jenkins_docker_run.sh
 ```
 
-Check if the `jcasc` docker instance is running:
+Check if the `jcasc` docker instance is running.
 ```sh
 sudo docker ps -a
 ```
 
-Once verified the installation, let's get access to Jenkins over HTTPS. 
+Once verified the installation, let's get access to Jenkins over HTTPS. Execute the next command from your Terminal where deployed the CDK project.
 ```sh
 JENKINS_LOCAL_URL_HTTPS=https://$(jq -r .SimpleEc2Stack.NODEIP output.json):8443; echo $JENKINS_LOCAL_URL_HTTPS
 ```
+Now, only open the above URL in your browser and enter the initial Jenkins user and password created in the above JCasC process. 
 
 
-#### 5.2. Jenkins and other tools with Docker Compose
+### 6. Creating a SAST Jenkins Pipeline with Checkmarx Kics
 
-```sh
-// https://github.com/fischer1983/docker-compose-jenkins-sonarqube
-mkdir sast; cd sast
-wget https://raw.githubusercontent.com/chilcano/aws-cdk-examples/main/simple-ec2/lib/scripts/sast-docker-compose.yaml
+Once finished the installation and configuration of Jenkins, I'm going to create a simple Pipeline that scans for vulnerabilities in the code of a GIT repository.
+Specifically, I'll use Kicks, it will scan for errors in our code and will generate reports in HTML and Json.
 
-sudo docker-compose -f sast-docker-compose.yaml up -d
+Only, you need to copy the content of `simple-ec2/_scripts/sast-pipeline-kics.groovy` in Jenkins as a Pipeline from Jenkins UI. 
 
-$ sudo docker-compose ps
-      Name                    Command               State                                           Ports
---------------------------------------------------------------------------------------------------------------------------------------------------
-sast_db_1          docker-entrypoint.sh postgres    Up      5432/tcp
-sast_jenkins_1     /sbin/tini -- /usr/local/b ...   Up      0.0.0.0:50000->50000/tcp,:::50000->50000/tcp, 0.0.0.0:8080->8080/tcp,:::8080->8080/tcp
-sast_sonarqube_1   ./bin/run.sh                     Up      0.0.0.0:9000->9000/tcp,:::9000->9000/tcp
-```
+Once created the Jenkins Pipeline, you should click over *Build with Parameters*, the pipeline has been configurated by default with [TerraGoat](https://github.com/bridgecrewio/terragoat.git) Git repository, when the pipeline execution has been finished, you will see the reports in HTML and Json generated by Kics in the Jenkins Workspace.
 
-Once completed the installation, let's get access to Jenkins.  
-From EC2 instance, let's get Jenkins initial generated password from Docker instance:
-```sh
-JENKINS_INI_PWD=$(sudo docker exec -it sast_jenkins_1 cat /var/jenkins_home/secrets/initialAdminPassword); echo $JENKINS_INI_PWD
-```
-
-From other terminal in your local computer and using the previous `JENKINS_INI_PWD`, open Jenkins Server URL: 
-```sh
-JENKINS_LOCAL_URL=http://$(jq -r .SimpleEc2Stack.NODEIP output.json):8080; echo $JENKINS_LOCAL_URL
-```
-
-
-
-
-### 6. Test your stack
 
 ### 7. Destroy the Instance
 
+From Terminal where deployed the CDK project, run the next command to destroy the entire stack and all AWS resources created.
 ```sh
 cdk destroy --profile es 
-
 ```
-
-
-## Troubleshooting
-
-### 1. Tailing the cloud-init log
-```sh
-$ tail -fn 9000 /var/log/cloud-init-output.log
-
-```
-
-### 2. Get versions
-

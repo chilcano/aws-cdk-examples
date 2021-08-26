@@ -44,6 +44,7 @@ $ tree . -d -L 1
 ├── code-server-ec2
 ├── code-server-ecs
 ├── lambda-tokenization
+├── simple-ec2
 ├── simple-frontend-backend-ecs
 └── simple-php-ts-ecs
 

@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                deleteDir() /* Clean up our workspace */
+                deleteDir()
 
                 echo "Build ${BUILD_NUMBER} - in the Workspace of '${WORKSPACE}'"
                 echo "Clone code into ${DIR_SOURCE}"
@@ -24,7 +24,8 @@ pipeline {
             steps {
                 echo "Installing Kics."
 
-                sh("curl -sfL 'https://raw.githubusercontent.com/Checkmarx/kics/master/install.sh' | bash") /* Kics is installed under ./bin/ */
+                // Kics is installed under ./bin/ 
+                sh("curl -sfL 'https://raw.githubusercontent.com/Checkmarx/kics/master/install.sh' | bash") 
                 sh "ls -la ${WORKSPACE}"
                 sh("./bin/kics version")
             }
