@@ -36,7 +36,10 @@ pipeline {
 
                 sh "mkdir -p ${DIR_RESULTS}"
                 script {
-                    def statusKicsScan = sh(script: "./bin/kics scan --ci --no-color -p ${DIR_SOURCE} --output-path ${DIR_RESULTS} --report-formats 'json,sarif,html'", returnStatus: true, returnStdout: false)
+                    def statusKicsScan = sh(
+                        script: "./bin/kics scan --ci --no-color -p ${DIR_SOURCE} --output-path ${DIR_RESULTS} --report-formats 'json,html'", 
+                        returnStatus: true, 
+                        returnStdout: false)
                     echo "Kics exit status: ${statusKicsScan}"
                     if (statusKicsScan > 0) {
                         echo "Kics has found vulnerabilities in the code."
@@ -44,7 +47,8 @@ pipeline {
                         echo "Kics hasn't found vulnerabilities in the code."
                     }
                 }
-                archiveArtifacts(artifacts: "${DIR_RESULTS}/*.html,${DIR_RESULTS}/*.sarif,${DIR_RESULTS}/*.json", fingerprint: true)
+                archiveArtifacts(artifacts: "${DIR_RESULTS}/*.html,${DIR_RESULTS}/*.json", fingerprint: true)
+                publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '${DIR_RESULTS}', reportFiles: '*.html', reportName: 'KICS Results', reportTitles: ''])
            }
         }
     }
