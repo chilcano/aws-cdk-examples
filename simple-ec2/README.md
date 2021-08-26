@@ -2,9 +2,12 @@
 
 ## Reference
 
-https://dev.to/emmanuelnk/part-3-simple-ec2-instance-awesome-aws-cdk-37ia
-https://www.digitalocean.com/community/tutorials/how-to-automate-jenkins-setup-with-docker-and-jenkins-configuration-as-code
-
+1. https://dev.to/emmanuelnk/part-3-simple-ec2-instance-awesome-aws-cdk-37ia
+2. https://www.digitalocean.com/community/tutorials/how-to-automate-jenkins-setup-with-docker-and-jenkins-configuration-as-code
+3. Jenkins Configuration as Code: https://www.jenkins.io/projects/jcasc/
+4. Available Jenkins Plugins for JCasC: https://github.com/jenkinsci/jenkins/blob/master/core/src/main/resources/jenkins/install/platform-plugins.json
+5. JCasC in Docker example: https://github.com/ultrabright/docker-jenkins
+6. TerraGoat - Vulnerable Terraform Infrastructure: https://github.com/bridgecrewio/terragoat.git
 
 ## Steps
 

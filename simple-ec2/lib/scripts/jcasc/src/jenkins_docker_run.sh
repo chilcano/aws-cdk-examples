@@ -15,6 +15,7 @@ keytore_pass=`cat ${JENKINS_KEYSTORE_PASS_FILE}`
 volume_base=`dirname $(pwd)`/run/jenkins_home
 
 # Avoiding error "cannot touch '/var/jenkins_home/copy_reference_file.log'"
+mkdir -p $volume_base
 chown -R 1000:1000 $volume_base
 
 # Running the container

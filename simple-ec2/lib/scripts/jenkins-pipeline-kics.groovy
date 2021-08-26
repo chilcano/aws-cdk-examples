@@ -5,8 +5,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'GIT_URL', defaultValue: 'https://github.com/bridgecrewio/terragoat.git', description: 'GIT URL')
-        string(name: 'GIT_JENKINS_CREDS', defaultValue: 'Bonobo.Git.Server', description: 'GIT credentials in Jenkins Credentials')
+        string(name: 'GIT_REPO_URL', defaultValue: 'https://github.com/bridgecrewio/terragoat.git', description: 'GIT repository URL')
     }
 
     stages {
@@ -15,64 +14,38 @@ pipeline {
                 deleteDir() /* Clean up our workspace */
 
                 echo "Build ${BUILD_NUMBER} - in the Workspace of '${WORKSPACE}'"
-                script {
-                    sh "ls -lahR ${WORKSPACE} "
-                }
-            }
-        }
-
-        stage('Clone GIT repo') {
-            steps {
                 echo "Clone code into ${DIR_SOURCE}"
-                sh("git clone ${params.GIT_URL} ${DIR_SOURCE}")
+                sh("git clone ${params.GIT_REPO_URL} ${DIR_SOURCE}")
                 sh "ls -la ${WORKSPACE}/${DIR_SOURCE}"
             }
         }
 
-//        stage('Run Checkmarx Kics - Standalone') {
-//            steps{
-//                echo "Executing Checkmarx Kics"
-//                installKICS()
-//                sh "mkdir -p ${DIR_RESULTS}"
-//                sh('/usr/bin/kics scan --ci --no-color -p ${WORKSPACE}/${DIR_SOURCE} --output-path ${DIR_RESULTS} --report-formats "json,sarif,html"')
-//                archiveArtifacts(artifacts: '${DIR_RESULTS}/*.html,${DIR_RESULTS}/*.sarif,${DIR_RESULTS}/*.json', fingerprint: true)
-//            }
-//        }
-
-
-        stage('Run Checkmarx Kics') {
+        stage('Install Checkmarx Kics') {
             steps {
-                echo "Executing Checkmarx Kics in Docker"
-                script {
-                    docker.image('checkmarx/kics:latest-alpine').inside("--entrypoint=''") {
-                        unstash 'source'
-                        sh('/app/bin/kics scan -p \${WORKSPACE}/\${DIR_SOURCE} -q /app/bin/assets/queries --ci --report-formats html -o \${DIR_RESULTS}')
-                        archiveArtifacts(artifacts: '${DIR_RESULTS}/results.html', fingerprint: true)
-                        publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '${DIR_RESULTS}/.', reportFiles: '${DIR_RESULTS}/results.html', reportName: 'KICS Results', reportTitles: ''])
-                    }
-                }
+                echo "Installing Kics."
+
+                sh("curl -sfL 'https://raw.githubusercontent.com/Checkmarx/kics/master/install.sh' | bash") /* Kics is installed under ./bin/ */
+                sh "ls -la ${WORKSPACE}"
+                sh("./bin/kics version")
             }
         }
 
+        stage('Run Checkmarx Kics') {
+            steps{
+                echo "Executing Kics."
+
+                sh "mkdir -p ${DIR_RESULTS}"
+                script {
+                    def statusKicsScan = sh(script: "./bin/kics scan --ci --no-color -p ${DIR_SOURCE} --output-path ${DIR_RESULTS} --report-formats 'json,sarif,html'", returnStatus: true, returnStdout: false)
+                    echo "Kics exit status: ${statusKicsScan}"
+                    if (statusKicsScan > 0) {
+                        echo "Kics has found vulnerabilities in the code."
+                    } else {
+                        echo "Kics hasn't found vulnerabilities in the code."
+                    }
+                }
+                archiveArtifacts(artifacts: "${DIR_RESULTS}/*.html,${DIR_RESULTS}/*.sarif,${DIR_RESULTS}/*.json", fingerprint: true)
+           }
+        }
     }
-}
-
-def installKICS(){
-    LATEST_VERSION="1.2.4"
-    //WGET_PATH=sh(script: 'which wget', returnStdout: true).trim()
-
-    if ( fileExists('${WORKSPACE}/_bin/kics') ) {
-        echo 'Kics is already installed.'
-    } else {
-        echo 'Installing Kics.'
-        //sh("${WGET_PATH}/wget -q -c https://github.com/Checkmarx/kics/releases/download/v${LATEST_VERSION}/kics_${LATEST_VERSION}_Linux_x64.tar.gz -O /tmp/kics.tar.gz")
-
-        //sh("curl https://github.com/Checkmarx/kics/releases/download/v${LATEST_VERSION}/kics_${LATEST_VERSION}_Linux_x64.tar.gz -o kics.tar.gz -s")
-        sh("curl https://github.com/Checkmarx/kics/releases/download/v${LATEST_VERSION}/kics_${LATEST_VERSION}_Linux_x64.tar.gz -O")
-        //sh("tar xfzv kics.tar.gz -C _bin/")
-        //sh("rm -f kics.tar.gz")
-        sh("tar xfzv kics_${LATEST_VERSION}_Linux_x64.tar.gz -C _bin/")
-        sh("rm -f kics_${LATEST_VERSION}_Linux_x64.tar.gz")
-    }
-    sh(script: '_bin/kics version', returnStdout: true).trim()
 }
