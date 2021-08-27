@@ -48,8 +48,19 @@ pipeline {
                         echo "Kics hasn't found vulnerabilities in the code."
                     }
                 }
-                archiveArtifacts(artifacts: "${DIR_RESULTS}/*.html,${DIR_RESULTS}/*.json", fingerprint: true)
-                publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '${DIR_RESULTS}', reportFiles: '*.html', reportName: 'KICS Results', reportTitles: ''])
+                archiveArtifacts(
+                    artifacts: "${DIR_RESULTS}/*.html,${DIR_RESULTS}/*.json", 
+                    fingerprint: true
+                )
+                publishHTML(
+                    [allowMissing: true, 
+                    alwaysLinkToLastBuild: true, 
+                    keepAll: true, 
+                    reportDir: '${DIR_RESULTS}', 
+                    reportFiles: '*.html', 
+                    reportName: 'KICS Results', 
+                    reportTitles: '']
+                )
            }
         }
     }
