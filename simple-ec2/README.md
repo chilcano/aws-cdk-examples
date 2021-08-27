@@ -1,13 +1,11 @@
-# Simple EC2
+# Simple EC2 (SAST in Jenkins Pipeline)
 
-## Reference
-
-1. https://dev.to/emmanuelnk/part-3-simple-ec2-instance-awesome-aws-cdk-37ia
-2. https://www.digitalocean.com/community/tutorials/how-to-automate-jenkins-setup-with-docker-and-jenkins-configuration-as-code
-3. Jenkins Configuration as Code: https://www.jenkins.io/projects/jcasc/
-4. Available Jenkins Plugins for JCasC: https://github.com/jenkinsci/jenkins/blob/master/core/src/main/resources/jenkins/install/platform-plugins.json
-5. JCasC in Docker example: https://github.com/ultrabright/docker-jenkins
-6. TerraGoat - Vulnerable Terraform Infrastructure: https://github.com/bridgecrewio/terragoat.git
+1. CDK Project in TypeScript
+2. EC2 Instance
+3. Jenkins in Docker 
+  * Jenkins exposed on HTTPS with a selfsigned certificate
+  * Installation and configuration using JCasC
+  * CI/CD Pipeline with Checkmarx Kics as SAST for IaC
 
 ## Steps
 
@@ -144,3 +142,12 @@ From Terminal where deployed the CDK project, run the next command to destroy th
 ```sh
 cdk destroy --profile es 
 ```
+
+## Reference
+
+1. https://dev.to/emmanuelnk/part-3-simple-ec2-instance-awesome-aws-cdk-37ia
+2. https://www.digitalocean.com/community/tutorials/how-to-automate-jenkins-setup-with-docker-and-jenkins-configuration-as-code
+3. Jenkins Configuration as Code: https://www.jenkins.io/projects/jcasc/
+4. Available Jenkins Plugins for JCasC: https://github.com/jenkinsci/jenkins/blob/master/core/src/main/resources/jenkins/install/platform-plugins.json
+5. JCasC in Docker example: https://github.com/ultrabright/docker-jenkins
+6. TerraGoat - Vulnerable Terraform Infrastructure: https://github.com/bridgecrewio/terragoat.git
