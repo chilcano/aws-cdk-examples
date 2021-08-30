@@ -7,6 +7,8 @@
   * Installation and configuration using JCasC
   * CI/CD Pipeline with Checkmarx Kics as SAST for IaC
 
+![](../_assets/20210706-sast-in-your-cicd-pipeline-iac.png)
+
 ## Steps
 
 ### 1. Setup AWS
@@ -127,6 +129,8 @@ Now, only open the above URL in your browser and enter the initial Jenkins user 
 
 
 ### 6. Creating a SAST Jenkins Pipeline with Checkmarx Kics
+
+![](../_assets/20210706-sast-in-your-cicd-pipeline.png)
 
 Once finished the installation and configuration of Jenkins, I'm going to create a simple Pipeline that scans for vulnerabilities in the code of a GIT repository.
 Specifically, I'll use Kicks, it will scan for errors in our code and will generate reports in HTML and Json.
