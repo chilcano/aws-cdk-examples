@@ -169,7 +169,6 @@ cdk destroy --profile es
 1. Enable Content-Security-Policy HTTP header in Jenkins  
 > [https://github.com/Checkmarx/kics/blob/master/docs/integrations_jenkins.md](https://github.com/Checkmarx/kics/blob/master/docs/integrations_jenkins.md)
 
-2. 
 
 ## Reference
 
