@@ -1,5 +1,9 @@
 FROM jenkins/jenkins:lts-jdk11
-#FROM jenkins/jenkins:latest ## Is it deprecated?
+
+# Install Python3 tools
+USER root
+RUN apt-get update && apt-get -yqq install python3 python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv > "/dev/null" 2>&1
+USER jenkins
 
 # VOLUME /var/jenkins_home
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false

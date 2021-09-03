@@ -44,6 +44,7 @@ pipeline {
                     SAST_ENV = [
                         "PATH=${WORKSPACE}/bin:$PATH",
                         "PYTHONPATH=${PYTHON_DEPENDENCIES}",
+                        "PYTHONUSERBASE=${WORKSPACE}",
                         "GOBIN=${WORKSPACE}/bin"
                     ]
                 }
@@ -68,6 +69,8 @@ pipeline {
 
                 script {
                     echo "Recording versions"
+                    sh("go version")
+                    sh("python3 --version")
                     withEnv(SAST_ENV) {
                         sh("kics version")
                         sh("yamllint --version")
@@ -76,7 +79,7 @@ pipeline {
                     }
                 }
 
-                sh("ls -ltR ${WORKSPACE}")
+                sh("ls -la ${WORKSPACE}")
             }
         }
 
@@ -111,9 +114,9 @@ pipeline {
                     [allowMissing: true, 
                     alwaysLinkToLastBuild: true, 
                     keepAll: true, 
-                    reportDir: '${DIR_RESULTS}', 
-                    reportFiles: '*.html', 
-                    reportName: 'KICS Results', 
+                    reportDir: "${DIR_RESULTS}", 
+                    reportFiles: "*.html", 
+                    reportName: "KICS Results", 
                     reportTitles: '']
                 )
            }
