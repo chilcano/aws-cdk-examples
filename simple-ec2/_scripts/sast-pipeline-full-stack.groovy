@@ -56,18 +56,18 @@ pipeline {
                 script {
                     echo "Installing Yaml Linter"
                     // $HOME/.local/bin/yamllint
-                    sh("PYTHONUSERBASE=$WORKSPACE pip install --user yamllint")
+                    //sh("PYTHONUSERBASE=$WORKSPACE pip install --user yamllint")
+                    sh("pip install --user yamllint")
 
                     echo "Installing Python Linter"
                     // $HOME/.local/bin/pylint
-                    sh("PYTHONUSERBASE=$WORKSPACE pip install --user pylint")
+                    //sh("PYTHONUSERBASE=$WORKSPACE pip install --user pylint")
+                    sh("pip install --user pylint")
 
                     echo "Installing Golang Linter"
                     // Install into ./bin/
                     sh("curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s ${GOLANGCILINT_VER}")
-                }
 
-                script {
                     echo "Recording versions"
                     sh("go version")
                     sh("python3 --version")
