@@ -194,6 +194,9 @@ Example of Git repositories:
 Once the pipeline is running, you will see 4 new links in the Jenkins user interface sidebar, each of them being links to each Report that each Linter has generated.
 
 
+20210904-sast-in-your-cicd-pipeline-full-stack-1-create.png
+
+
 ### 7. Destroy the Instance
 
 From Terminal where deployed the CDK project, run the next command to destroy the entire stack and all AWS resources created.

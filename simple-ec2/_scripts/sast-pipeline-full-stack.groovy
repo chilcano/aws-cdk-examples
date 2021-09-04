@@ -6,6 +6,7 @@ def totalYaml = 0
 def totalDockerfile = 0
 def totalPython = 0
 def totalGolang = 0
+String gitRepoName = ""
 
 pipeline {
     agent any
@@ -39,24 +40,13 @@ pipeline {
                      -> Total Python files: ${totalPython}
                      -> Total Golang files: ${totalGolang}
                     """
+                    gitRepoName = getGitRepoName(params.GIT_REPO_URL)
                 }
             }
         }
 
         stage('Install SAST Tools') {
             steps {
-                echo "Preparing Environment"
-                script {
-                    def PYTHON_DEPS_WORKSPACE = sh(script: 'find $WORKSPACE -type d -name "site-packages"', returnStdout: true).trim()
-                    def PYTHON_DEPS_HOME = sh(script: 'find $HOME -type d -name "site-packages"', returnStdout: true).trim()
-                    SAST_ENV = [
-                        "PATH=${WORKSPACE}/bin:${HOME}/.local/bin:$PATH",
-                        "PYTHONPATH=${PYTHON_DEPS_WORKSPACE}:${PYTHON_DEPS_HOME}",
-                        "PYTHONUSERBASE=${WORKSPACE}",
-                        "GOBIN=${WORKSPACE}/bin"
-                    ]
-                }
-
                 echo "Installing Kics."
                 // Kics is installed under ./bin/ 
                 sh("curl -sfL 'https://raw.githubusercontent.com/Checkmarx/kics/master/install.sh' | bash") 
@@ -79,14 +69,27 @@ pipeline {
                         go version
                         python3 --version
                     """
-                    withEnv(SAST_ENV) {
-                        sh """
-                            kics version
-                            yamllint --version
-                            pylint --version
-                            golangci-lint --version
-                        """
-                    }
+                }
+
+                echo "Preparing Environment"
+                script {
+                    def PYTHON_DEPS_WORKSPACE = sh(script: 'find $WORKSPACE -type d -name "site-packages"', returnStdout: true).trim()
+                    def PYTHON_DEPS_HOME = sh(script: 'find $HOME -type d -name "site-packages"', returnStdout: true).trim()
+                    SAST_ENV = [
+                        "PATH=${WORKSPACE}/bin:${HOME}/.local/bin:$PATH",
+                        "PYTHONPATH=${PYTHON_DEPS_WORKSPACE}:${PYTHON_DEPS_HOME}",
+                        "PYTHONUSERBASE=${WORKSPACE}",
+                        "GOBIN=${WORKSPACE}/bin"
+                    ]
+                }
+
+                withEnv(SAST_ENV) {
+                    sh """
+                        kics version
+                        yamllint --version
+                        pylint --version
+                        golangci-lint --version
+                    """
                 }
 
                 sh("ls -la ${WORKSPACE}")
@@ -125,7 +128,7 @@ pipeline {
                     reportDir: "${DIR_RESULTS}", 
                     reportFiles: "*.html", 
                     reportName: "KICS Results", 
-                    reportTitles: '']
+                    reportTitles: "Kics (${gitRepoName})"]
                 )
            }
         }
@@ -149,7 +152,11 @@ pipeline {
                                 enabledForFailure: false,
                                 aggregatingResults: true,
                                 blameDisabled: false,
-                                tool: yamlLint(pattern: "**/yamllint-stdout.log", reportEncoding: "UTF-8")
+                                tool: yamlLint(
+                                    pattern: "**/yamllint-stdout.log", 
+                                    reportEncoding: "UTF-8")
+                                    //id: "yamllint-${gitRepoName}",
+                                    //name: "YAML Lint")
                             )
                         } else {
                             echo "-> Yaml Linter didn't find any issue in the code."
@@ -179,7 +186,11 @@ pipeline {
                                 enabledForFailure: false,
                                 aggregatingResults: true,
                                 blameDisabled: false,
-                                tool: pyLint(pattern: "**/pylint-stdout.log", reportEncoding: "UTF-8")
+                                tool: pyLint(
+                                    pattern: "**/pylint-stdout.log", 
+                                    reportEncoding: "UTF-8")
+                                    //id: "pylint-${gitRepoName}",
+                                    //name: "Python Lint")
                             )
                         } else {
                             echo "-> Python Linter didn't find any issue in the code."
@@ -211,7 +222,11 @@ pipeline {
                                 enabledForFailure: false,
                                 aggregatingResults: true,
                                 blameDisabled: false,
-                                tool: goLint(pattern: "**/golangci-lint-stdout.log", reportEncoding: "UTF-8")
+                                tool: goLint(
+                                    pattern: "**/golangci-lint-stdout.log", 
+                                    reportEncoding: "UTF-8")
+                                    //id: "golint-${gitRepoName}",
+                                    //name: "Golang Lint")
                             )
                         } else {
                             echo "-> GolangCI Linter didn't find any issue in the code."
@@ -221,4 +236,10 @@ pipeline {
             }
         }
     }
+}
+
+static String getGitRepoName (String repoUrl) {
+    def repoUrlParts = repoUrl.split("/")
+    String repoNameWithExt = repoUrlParts[repoUrlParts.length - 1]
+    return repoNameWithExt.substring(0, repoNameWithExt.length() - 4)
 }
