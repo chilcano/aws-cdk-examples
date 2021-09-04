@@ -14,7 +14,7 @@ pipeline {
         string(
             name: 'GIT_REPO_URL', 
             defaultValue: 'https://github.com/bridgecrewio/terragoat.git', 
-            description: 'Examples: https://github.com/chilcano/aws-cdk-examples.git, https://github.com/microservices-demo/microservices-demo.git, https://github.com/Hardw01f/Vulnerability-goapp.git'
+            description: 'Examples: https://github.com/chilcano/aws-cdk-examples.git'
         )
     }
 
