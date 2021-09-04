@@ -12,7 +12,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 deleteDir()
-
+                sh("printenv | sort")
                 echo "Build ${BUILD_NUMBER} - in the Workspace of '${WORKSPACE}'"
                 echo "Clone code into ${DIR_SOURCE}"
                 sh("git clone ${params.GIT_REPO_URL} ${DIR_SOURCE}")
@@ -56,9 +56,9 @@ pipeline {
                     [allowMissing: true, 
                     alwaysLinkToLastBuild: true, 
                     keepAll: true, 
-                    reportDir: '${DIR_RESULTS}', 
-                    reportFiles: '*.html', 
-                    reportName: 'KICS Results', 
+                    reportDir: "${DIR_RESULTS}", 
+                    reportFiles: "*.html", 
+                    reportName: "KICS Results", 
                     reportTitles: '']
                 )
            }

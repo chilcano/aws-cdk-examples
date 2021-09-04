@@ -102,8 +102,10 @@ Cloud-init v. 21.2-3-g899bfaa9-0ubuntu2~20.04.1 finished at Wed, 25 Aug 2021 14:
 
 In order to install Jenkins in an automated way and avoid to configure initial user, enable HTTPS and install plugins, I'm going to user [JCasC](https://www.jenkins.io/projects/jcasc/) approach. Execute next commands from EC2 instance Terminal.
 ```sh
-git clone https://github.com/chilcano/aws-cdk-examples.git
+git clone https://github.com/chilcano/aws-cdk-examples.git 
+
 cd aws-cdk-examples/simple-ec2/_scripts/jcasc/src/
+
 sudo ./jenkins_docker_build.sh
 ```
 

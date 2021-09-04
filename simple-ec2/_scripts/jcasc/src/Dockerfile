@@ -1,8 +1,8 @@
 FROM jenkins/jenkins:lts-jdk11
 
-# Install Python3 tools
+# Install Python3 and Go tools
 USER root
-RUN apt-get update && apt-get -yqq install python3 python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv > "/dev/null" 2>&1
+RUN apt-get update && apt-get -yqq install golang python3 python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv > "/dev/null" 2>&1
 USER jenkins
 
 # VOLUME /var/jenkins_home
