@@ -170,7 +170,7 @@ When the pipeline execution has been finished, you will see the reports in HTML 
 
 #### 6.2. Full stack Pipeline (Python, Golang, Yaml, etc.)
 
-![](../simple-ec2/_assets/20210706-sast-in-your-cicd-pipeline-full-stack.png)
+![](../simple-ec2/_assets/20210904-sast-in-your-cicd-pipeline-full-stack.png)
 
 In this Jenkins Pipeline I am going to use the next Linters:
 
@@ -193,8 +193,13 @@ Example of Git repositories:
 
 Once the pipeline is running, you will see 4 new links in the Jenkins user interface sidebar, each of them being links to each Report that each Linter has generated.
 
+![](../simple-ec2/_assets/20210904-sast-in-your-cicd-pipeline-full-stack-2-aggregate-reports.png)
 
-20210904-sast-in-your-cicd-pipeline-full-stack-1-create.png
+![](../simple-ec2/_assets/20210904-sast-in-your-cicd-pipeline-full-stack-3-report-yamllint.png)
+
+![](../simple-ec2/_assets/20210904-sast-in-your-cicd-pipeline-full-stack-4-report-pylint.png)
+
+![](../simple-ec2/_assets/20210904-sast-in-your-cicd-pipeline-full-stack-5-report-golint.png)
 
 
 ### 7. Destroy the Instance
