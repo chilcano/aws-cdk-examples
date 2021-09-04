@@ -141,7 +141,7 @@ Now, only open the above URL in your browser and enter the initial Jenkins user 
 
 #### 6.1. Checkmarx Kics to scan IaC (Dockerfile, Kubernetes, Terraform, CloudFormation, etc.)
 
-![](../simple-ec2/_assets/20210706-sast-in-your-cicd-pipeline.png)
+![](../simple-ec2/_assets/20210706-sast-in-your-cicd-pipeline-kics.png)
 
 Once finished the installation and configuration of Jenkins, I'm going to create a simple Pipeline that scans for vulnerabilities in the code of a GIT repository.
 Specifically, I'll use Kics, it will scan for errors in our infrastructure as code (IaC) and will generate reports in HTML and Json.
@@ -170,11 +170,18 @@ When the pipeline execution has been finished, you will see the reports in HTML 
 
 #### 6.2. Full stack Pipeline (Python, Golang, Yaml, etc.)
 
+![](../simple-ec2/_assets/20210706-sast-in-your-cicd-pipeline-full-stack.png)
+
 In this Jenkins Pipeline I am going to use the next Linters:
 
 1. Yaml Linter
 2. Golang Linter
 3. Python Linter
+
+Also, I'm going to use these Jenkins Plugins:
+1. [archiveArtifacts](https://www.jenkins.io/doc/pipeline/steps/core/)
+2. [publishHTML](https://www.jenkins.io/doc/pipeline/steps/htmlpublisher/)
+3. [Warnings-NG / recordIssues / tools: yamlLint, pyLint and goLint](https://www.jenkins.io/doc/pipeline/steps/warnings-ng/)
 
 If you want add more Linters because you added Java and NodeJS code, then, You can found other linters in this list: [SAST in your SDLC for Cloud-Native Apps](https://holisticsecurity.io/2021/07/06/sast-in-sdlc-for-cloud-native-apps/).
 Now, let's create a new Pipeline, then, copy the content of [`simple-ec2/_scripts/sast-pipeline-full-stack.groovy`](../simple-ec2/_scripts/sast-pipeline-full-stack.groovy) in Jenkins as a new Pipeline from Jenkins UI. 
