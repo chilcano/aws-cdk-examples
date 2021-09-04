@@ -13,9 +13,9 @@ pipeline {
 
     parameters {
         string(
-            name: 'GIT_REPO_URL', 
-            defaultValue: 'https://github.com/bridgecrewio/terragoat.git', 
-            description: 'Examples: https://github.com/chilcano/aws-cdk-examples.git'
+            name: "GIT_REPO_URL", 
+            defaultValue: "https://github.com/chilcano/aws-cdk-examples.git", 
+            description: "Examples: https://github.com/bridgecrewio/terragoat.git"
         )
     }
 

@@ -189,7 +189,7 @@ Now, let's create a new Pipeline, then, copy the content of [`simple-ec2/_script
 Once created the new Pipeline, you should click over *Build with Parameters* and enter a Git repository URL to be scanned by all above Linters, even Kics.   
 Example of Git repositories:
 * [AWS-CDK-Examples](https://github.com/chilcano/aws-cdk-examples.git): This same repository. A set of samples I used to experiment with AWS CDK.
-* [Vulnerability-Goapp](https://github.com/Hardw01f/Vulnerability-goapp.git): A vulnerable golang Web application for education
+* [Vulnerability-Goapp](https://github.com/Hardw01f/vulnerability-goapp.git): A vulnerable golang Web application for education
 
 Once the pipeline is running, you will see 4 new links in the Jenkins user interface sidebar, each of them being links to each Report that each Linter has generated.
 
