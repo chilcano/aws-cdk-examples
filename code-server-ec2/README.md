@@ -12,7 +12,7 @@
 ```sh
 $ git clone https://github.com/chilcano/aws-cdk-samples
 $ cd aws-cdk-samples/code-server-ec2
-$ nmp install
+$ npm install
 ```
 
 ### 2. Deploy the project
