@@ -38,7 +38,7 @@ Default output format [None]: json
 
 An annoying thing to do everytime you start working with a fresh project is creating a SSH key-pair, for that I've created a bash script that creates a new SSH key-pair in local and upload it to specific or to all AWS' regions. By default this script will create the SSH key-pair in all regions unless configured. 
 ```sh
-export AWS_PROFILE=es
+export AWS_PROFILE=ds
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/import_ssh_pub_key_to_aws_regions.sh)
 ```
 
@@ -63,6 +63,21 @@ cd aws-cdk-examples/simple-ec2/
 npm install @aws-cdk/aws-ec2 @aws-cdk/aws-iam dotenv
 ```
 
+#### 2.1. Updating existing CDK project
+
+```sh
+cd aws-cdk-examples/simple-ec2-sast/
+
+npm install
+
+// optional - update npm
+npm install -g npm
+
+// optional - update cdk
+npm install -g aws-cdk
+```
+
+
 ### 3. Deploy
 
 Now, we are going to execute our CDK project using the AWS Profile already configured (`--profile ds`).
@@ -78,7 +93,7 @@ This CDK project will generate the `output.json` file with the public IP and Hos
 
 ### 4. Accessing the EC2 Instance
 
-I require above `output.json` and `~/.ssh/tmpkey` files. Then, make sure both files have been created successfully.
+The above `output.json` and `~/.ssh/tmpkey` files are required to get access to recently created EC2 instance. Only, make sure both files have been created successfully.
 ```sh
 ssh ubuntu@$(jq -r .SimpleEc2Stack.NODEIP output.json) -i ~/.ssh/tmpkey
 ```
